@@ -1,0 +1,22 @@
+{
+  "name": "forge-ux",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server"
+  },
+  "author": "Geoff Gardner <geoff@skyworksas.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-less": "^1.1.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-injector": "^0.6.1",
+    "grunt-run": "^0.5.2",
+    "grunt-wiredep": "^2.0.0",
+    "live-server": "^0.8.2",
+    "wiredep": "^2.2.2"
+  }
+}
