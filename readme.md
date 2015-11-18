@@ -8,11 +8,11 @@ The aim of this project is to provide a centralized repository for Forge's user 
 You'll need node.js of course. As this guide is for **OSX only**, here is the command using homebrew:
 
 	$ brew install node
-	
+
 Make sure you are in the top level directory and run
 
 	$ ./install.sh
-	
+
 To install everything.
 
 ## Run
@@ -22,5 +22,16 @@ To install everything.
 Closing run will automatically kill the sub processes. If they don't die for whatever reason, use
 
 	$ pkill npm; pkill node
-	
-To get rid of the background processes. 
+
+To get rid of the background processes.
+
+
+## Todos
+
+	* Integrate d3+nvm+angular for reporting/analytics
+	* Integrate angular-uploader
+	* Port uploader page from old frontend
+	* Get reporting page to a presentable and configurable state
+	* Integrate Forge UX as submodule and kill old frontend
+	* New forge theme (Rara)
+	* Test capabilities (in particular <viddeo>, <canvas>, and <audio>) with QtWebkit.
