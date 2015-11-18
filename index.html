@@ -29,7 +29,7 @@
       Forge requires a Javascript enabled browser.
     </noscript>
 
-    <!-- Load ui and default to main view. -->
+    <!-- Load ui -->
     <main role="main" ui-view></main>
 
     <!-- bower:js -->
@@ -42,6 +42,7 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/angular-ui-uploader/dist/uploader.js"></script>
     <!-- endbower -->
 
     <!-- injector:js -->
@@ -57,6 +58,9 @@
     <script src="/app/components/resetPasswordPane/resetPasswordPane.controller.js"></script>
     <script src="/app/components/signupPane/signupPane.controller.js"></script>
     <script src="/app/components/signupPane/signupPane.directive.js"></script>
+    <script src="/app/components/uploader/uploader.controller.js"></script>
+    <script src="/app/components/uploader/uploader.directive.js"></script>
+    <script src="/app/filters/limit.filter.js"></script>
     <script src="/app/loginView/loginView.controller.js"></script>
     <script src="/app/main/main.controller.js"></script>
     <script src="/app/services/error.service.js"></script>

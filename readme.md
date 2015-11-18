@@ -28,10 +28,10 @@ To get rid of the background processes.
 
 ## Todos
 
-	* Integrate d3+nvm+angular for reporting/analytics
-	* Integrate angular-uploader
-	* Port uploader page from old frontend
-	* Get reporting page to a presentable and configurable state
-	* Integrate Forge UX as submodule and kill old frontend
-	* New forge theme (Rara)
-	* Test capabilities (in particular <viddeo>, <canvas>, and <audio>) with QtWebkit.
+* Integrate d3+nvm+angular for reporting/analytics
+* Integrate angular-uploader
+* Port uploader page from old frontend
+* Get reporting page to a presentable and configurable state
+* Integrate Forge UX as submodule and kill old frontend
+* New forge theme (Rara)
+* Test capabilities (in particular <viddeo>, <canvas>, and <audio>) with QtWebkit.

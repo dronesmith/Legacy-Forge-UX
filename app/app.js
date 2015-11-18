@@ -7,7 +7,8 @@ angular
     'ngResource',
     'ngRoute',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.uploader'
   ])
 
   // Global configuration here
@@ -25,6 +26,13 @@ angular
         url: '/',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
+      })
+
+      // Upload flight state
+      .state('upload', {
+        url: 'upload',
+        template: '<uploader></uploader>',
+        parent: 'forge'
       })
 
       // Login state. The app should always redirect to this state whenever the
