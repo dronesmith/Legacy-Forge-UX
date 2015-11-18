@@ -3,8 +3,24 @@
 angular
   .module('ForgeApp')
   .controller('MainCtrl', function(
-    $scope
+    $scope,
+    $state,
+    Session,
+    Error
   ) {
-    $scope.description = "I'm not your buddy, guy!";
+
+    Session
+      .get(
+        {},
+        function(data) {
+
+        $scope.userInfo = data.userData || null;
+        if (!$scope.userInfo) {
+          Error(null, 'session:null');
+        } else {
+          ga('set', '&uid', $scope.userInfo.id);
+        }
+      }, Error)
+    ;
   })
 ;

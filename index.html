@@ -29,6 +29,7 @@
       Forge requires a Javascript enabled browser.
     </noscript>
 
+    <!-- Load ui and default to main view. -->
     <main role="main" ui-view></main>
 
     <!-- bower:js -->
@@ -45,8 +46,20 @@
 
     <!-- injector:js -->
     <script src="/app/app.js"></script>
+    <script src="/app/components/errorModal/errorModal.controller.js"></script>
+    <script src="/app/components/loginPane/loginPane.controller.js"></script>
+    <script src="/app/components/loginPane/loginPane.directive.js"></script>
+    <script src="/app/components/navbar/navbar.controller.js"></script>
+    <script src="/app/components/navbar/navbar.directive.js"></script>
+    <script src="/app/components/resetPasswordPane/resetPassword.directive.js"></script>
+    <script src="/app/components/resetPasswordPane/resetPasswordPane.controller.js"></script>
+    <script src="/app/components/signupPane/signupPane.controller.js"></script>
+    <script src="/app/components/signupPane/signupPane.directive.js"></script>
+    <script src="/app/loginView/loginView.controller.js"></script>
     <script src="/app/main/main.controller.js"></script>
-    <script src="/app/main/main.js"></script>
+    <script src="/app/services/error.service.js"></script>
+    <script src="/app/services/session.service.js"></script>
+    <script src="/app/services/user.service.js"></script>
     <!-- endinjector -->
 
   </body>

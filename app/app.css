@@ -8792,3 +8792,6 @@ button.close {
 .fa-fonticons:before {
   content: "\f280";
 }
+#loginView .spacer {
+  margin-top: 40px;
+}
