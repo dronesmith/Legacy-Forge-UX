@@ -2,7 +2,21 @@
   <navbar></navbar>
   <article class="container">
     <div ui-view>
-      <!-- <uploader></uploader> -->
+      <div class="row">
+        <div class="col-sm-3">
+          <h3>Your Flights</h3>
+          <ul class="list-group">
+            <li ng-repeat="flight in flights" class="list-group-item">
+              <a href="" ng-click="loadFlight(flight)">{{flight.created | date:'medium'}} | <small>{{flight.kind}}</small></a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-8">
+          <h3>Analysis</h3>
+          <!--<button ng-click="api.refresh()" class="btn btn-default btn-small">Refresh</button>-->
+          <nvd3 options='options' data='data'></nvd3>
+        </div>
+      </div>
     </div>
   </article>
   <contact-footer></contact-footer>

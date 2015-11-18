@@ -8,7 +8,8 @@ angular
     'ngRoute',
     'ui.router',
     'ui.bootstrap',
-    'ui.uploader'
+    'ui.uploader',
+    'nvd3'
   ])
 
   // Global configuration here

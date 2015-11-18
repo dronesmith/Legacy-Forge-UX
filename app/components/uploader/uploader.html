@@ -21,7 +21,7 @@
         ng-init="uploaderControl.drone=user.drones[0]"
         ng-options="drone as drone.systemId for drone in user.drones track by drone._id">
       </select>
-      <p class="text-danger" ng-show="!uploaderControl.drone">User has no drone associated with them.</p>
+      <p class="text-danger" ng-show="!uploaderControl.drone">User has no drones associated with them.</p>
     </fieldset>
 
     <fieldset class="form-group">
