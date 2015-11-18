@@ -9,7 +9,6 @@ angular
         case 'session:null': $state.go('login'); break;
         default:
           // error modal
-          console.log('got here');
           $uibModal.open({
             animation: true,
             templateUrl: 'app/components/errorModal/errorModal.html',

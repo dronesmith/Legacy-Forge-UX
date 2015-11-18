@@ -25,7 +25,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ["app/**/*.less", "bower_components/bootstrap/less/**/*.less"],
+      files: ["app/**/*.less", "theme/**/*.less"],
       tasks: ["less", "wiredep", "injector:prestyle", "injector:styles"]
     },
 
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
           // Default value is the directory of the source, which is probably what you want.
           paths: [
             "bower_components/font-awesome/less/**/*.less",
-            "bower_components/bootstrap/less/**/*.less"
+            "theme/**/*.less"
           ],
         },
         files: {

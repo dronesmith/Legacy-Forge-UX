@@ -1,8 +1,8 @@
 <section id="navbar">
-  <nav class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+  <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
       <div class="navbar-header">
-        <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+        <button class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main" type="button">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -10,11 +10,14 @@
         </button>
         <a href="/" class="navbar-brand">Forge</a>
       </div>
-      <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-        <ul class="nav navbar-nav">
-          <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-              <a ng-href="{{item.link}}">{{item.title}}</a>
-          </li>
+      <div class="navbar-collapse collapse" id="navbar-main">
+        <ul class="nav navbar-nav pull-right">
+          <li> <a href="" ng-click="editAccount()">Account</a> </li>
+          <li ng-class="{active: isActive('upload')}"> <a href="">Upload Flight</a> </li>
+          <li ng-class="{active: isActive('/')}"> <a href="/">Analytics</a> </li>
+          <li> <a target="_self" href="assets/tools/recordmav.zip" download="recordmav.zip">MAV Tools</a> </li>
+          <li> <a target="_self" href="assets/tools/api.pdf" download="api.pdf">API Docs</a> </li>
+          <li> <a href="" ng-click="logout()">Log Out</a> </li>
         </ul>
       </div>
     </div>

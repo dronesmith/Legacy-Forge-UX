@@ -2,7 +2,7 @@
 
 angular
   .module('ForgeApp')
-  .factory('Session', function(
+  .factory('User', function(
     $resource) {
 
     return $resource('/index/user', {
