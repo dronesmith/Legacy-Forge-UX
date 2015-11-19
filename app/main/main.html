@@ -11,10 +11,46 @@
             </li>
           </ul>
         </div>
-        <div class="col-sm-8">
-          <h3>Analysis</h3>
+        <div class="col-sm-8" ng-init="isCollapsed=true">
+          <h3>Analysis <small><a href="" ng-click="isCollapsed = !isCollapsed">edit</a></small></h3>
+          <div uib-collapse="isCollapsed">
+            <form name="chartForm">
+
+              <div class="row">
+                <fieldset class="form-group col-sm-4">
+                  <label for="type">Chart Type</label>
+                  <select class="form-control">
+                    <option>Hurp</option>
+                  </select>
+                </fieldset>
+
+                <fieldset class="form-group col-sm-4">
+                  <label for="xAxis">X Axis Label</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-model="options.chart.xAxis.axisLabel">
+                </fieldset>
+
+                <fieldset class="form-group col-sm-4">
+                  <label for="yAxis">Y Axis Label</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-model="options.chart.yAxis.axisLabel">
+                </fieldset>
+              </div>
+
+              <fieldset class="form-group">
+                <label for="data">Edit Data Points</label>
+              </fieldset>
+            </form>
+	        </div>
           <!--<button ng-click="api.refresh()" class="btn btn-default btn-small">Refresh</button>-->
           <nvd3 options='options' data='data'></nvd3>
+          <button class="btn btn-default pull-right">Export CSV</button>
         </div>
       </div>
     </div>

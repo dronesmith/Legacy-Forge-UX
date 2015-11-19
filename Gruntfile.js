@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 
     watch: {
       files: ["app/**/*.less", "theme/**/*.less"],
-      tasks: ["less", "wiredep", "injector:prestyle", "injector:styles"]
+      tasks: ["less", "wiredep", "injector:styles"]
     },
 
     // For injecting bower dependencies
