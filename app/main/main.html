@@ -14,42 +14,119 @@
         <div class="col-sm-8" ng-init="isCollapsed=true">
           <h3>Analysis <small><a href="" ng-click="isCollapsed = !isCollapsed">edit</a></small></h3>
           <div uib-collapse="isCollapsed">
-            <form name="chartForm">
+            <form name="chartForm" ng-init="inEditMode=false">
 
               <div class="row">
-                <fieldset class="form-group col-sm-4">
-                  <label for="type">Chart Type</label>
-                  <select class="form-control">
-                    <option>Hurp</option>
+                <fieldset class="form-group col-sm-6">
+                  <label for="yAxis1">Y Axis Label</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-model="options.chart.yAxis1.axisLabel">
+                </fieldset>
+
+                <fieldset class="form-group col-sm-6">
+                  <label for="editData">Edit Data Point</label>
+                  <select
+                    class="form-control"
+                    ng-show="data.length > 0"
+                    ng-model="stream"
+                    ng-change="
+                      newDataCollapse=false;
+                      newDatum=getDatum(stream);
+                      inEditMode=true;
+                    "
+                    ng-click="
+                      newDataCollapse=false;
+                      newDatum=getDatum(stream);
+                      inEditMode=true;
+                    "
+                    ng-options="s as s.key for s in data track by s.series">
                   </select>
                 </fieldset>
 
-                <fieldset class="form-group col-sm-4">
-                  <label for="xAxis">X Axis Label</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    ng-model-options="{ updateOn: 'blur' }"
-                    ng-model="options.chart.xAxis.axisLabel">
-                </fieldset>
-
-                <fieldset class="form-group col-sm-4">
-                  <label for="yAxis">Y Axis Label</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    ng-model-options="{ updateOn: 'blur' }"
-                    ng-model="options.chart.yAxis.axisLabel">
-                </fieldset>
               </div>
 
               <fieldset class="form-group">
-                <label for="data">Edit Data Points</label>
+                <button class="btn btn-default" ng-click="
+                  newDataCollapse=false;
+                  newDatum = initDatum();
+                  inEditMode = false;
+                  ">New Data Point</button>
+                  <button class="btn btn-default" ng-click="api.refresh()">Refresh</button>
               </fieldset>
+
+              <div class="row" ng-init="newDataCollapse=true">
+                <div uib-collapse="newDataCollapse" class="well well-sm">
+                  <div class="row">
+                    <fieldset class="form-group col-sm-6">
+                      <label for="datumName">Name</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        ng-model-options="{ updateOn: 'blur' }"
+                        ng-model="newDatum.key">
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-6">
+                      <label for="datumName">Message Number</label>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="0"
+                        max="255"
+                        ng-model-options="{ updateOn: 'blur' }"
+                        ng-model="newDatum.msg">
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-6">
+                      <label for="datumName">Field Name</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        ng-model-options="{ updateOn: 'blur' }"
+                        ng-model="newDatum.name">
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-6">
+                      <label for="datumName">Data Point</label>
+                      <select
+                        ng-model="newDatum.type"
+                        class="form-control">
+                        <option value="line">Line Plot</option>
+                        <option value="area">Area Graph</option>
+                        <option value="bar">Bar Graph</option>
+                      </select>
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-6">
+                      <button ng-show="!inEditMode" class="btn btn-default pull-left" ng-click="addDataPoint(newDatum); newDataCollapse=true;">Add Data Point</button>
+                      <button
+                        ng-show="inEditMode"
+                        class="btn btn-default pull-left"
+                        ng-click="
+                          updateDataPoint(newDatum);
+                          newDataCollapse=true;">Update</button>
+                      <button
+                        ng-show="inEditMode"
+                        class="btn btn-default pull-left"
+                        ng-click="
+                          removeDataPoint(newDatum);
+                          newDataCollapse=true;">Remove</button>
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-6">
+                      <button class="btn btn-default pull-right" ng-click="newDataCollapse=true">Close Pane</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+
+
             </form>
 	        </div>
-          <!--<button ng-click="api.refresh()" class="btn btn-default btn-small">Refresh</button>-->
-          <nvd3 options='options' data='data'></nvd3>
+          <nvd3 options='options' data='data' api="api"></nvd3>
           <button class="btn btn-default pull-right">Export CSV</button>
         </div>
       </div>
