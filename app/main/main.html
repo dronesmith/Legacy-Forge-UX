@@ -32,14 +32,19 @@
                     class="form-control"
                     ng-show="nvGraphData.length > 0"
                     ng-model="stream"
-                    ng-change="
+                    ng-click="
                       newDataCollapse=false;
                       newDatum=getDatum(stream);
                       inEditMode=true;
                     "
-                    ng-options="s as s.key for s in nvGraphData track by s.series">
+                    ng-change="
+                      newDatum=getDatum(stream);
+                      inEditMode=true;
+                    "
+                    ng-options="i as s.key for (i, s) in nvGraphData track by i">
+                      <option style="display:none" value="">Select a Data Set</option>
                   </select>
-                  <p ng-hide="nvGraphData.length > 0" class="text-danger">No Data Sets added.</p>
+                  <p ng-hide="nvGraphData.length > 0" class="text-danger">No Data Sets.</p>
                 </fieldset>
 
               </div>
@@ -108,14 +113,14 @@
                         ng-show="inEditMode"
                         class="btn btn-default pull-left"
                         ng-click="
-                          updateDataPoint(newDatum);
+                          updateDataPoint(newDatum, stream);
                           newDataCollapse=true;
                           api.refresh();">Update</button>
                       <button
                         ng-show="inEditMode"
                         class="btn btn-default pull-left"
                         ng-click="
-                          removeDataPoint(newDatum);
+                          removeDataPoint(stream);
                           newDataCollapse=true;
                           api.refresh();">Remove</button>
                     </fieldset>

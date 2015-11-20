@@ -11,7 +11,6 @@ angular
   ) {
 
     $scope.newDatum = {};
-    $scope.series = 0; // dumb, but necessary. FIXME
     $scope.CSVExport = 'export_' + (new Date()).getTime();
 
     //
@@ -20,57 +19,16 @@ angular
     $http.get('app/main/output.json').then(function(data) {
       $scope.flightData = data.data;
       $scope.nvGraphData = [
-        addDataStream('Roll', 'line', '30:roll', $scope.flightData.flight),
-        addDataStream('Yaw', 'line', '30:yaw', $scope.flightData.flight),
-        addDataStream('Roll Speed', 'line', '30:rollspeed', $scope.flightData.flight)
+        addDataStream('Pitch Speed', 'line', '30:pitchspeed', $scope.flightData.flight),
+        addDataStream('Yaw Speed', 'area', '30:yawspeed', $scope.flightData.flight),
+        addDataStream('Roll Speed', 'bar', '30:rollspeed', $scope.flightData.flight)
       ];
-
-      $scope.stream = $scope.nvGraphData[0];
 
     });
 
     //
-    // Initializes a new datum to be edited in the frontend.
+    // Format data for CSV
     //
-    $scope.initDatum = function() {
-      return {
-        key: 'Altitude',
-        type: 'line',
-        msg: 74,
-        name: 'alt'
-      };
-    };
-
-    //
-    // Get a datum to edit in the front end from a stream.
-    //
-    $scope.getDatum = function(stream) {
-      return {
-        index: stream.series,
-        key: stream.key,
-        type: stream.type,
-        name: stream.name,
-        msg: +stream.msg
-      };
-    };
-
-    //
-    // Update an existing stream.
-    //
-    $scope.updateDataPoint = function(datum) {
-      $scope.removeDataPoint(datum);
-      $scope.addDataPoint(datum);
-    };
-
-    //
-    // Remove a stream.
-    //
-    $scope.removeDataPoint = function(datum) {
-      $scope.nvGraphData.splice(datum.series, 1);
-      $scope.newDatum = {};
-      $scope.stream = $scope.nvGraphData[0];
-    };
-
     $scope.getDataAsCSV = function() {
       var csvData = [['Time (s)']], index = 1;
       $scope.CSVExport = 'export_' + (new Date()).getTime();
@@ -96,11 +54,60 @@ angular
       return csvData;
     }
 
+    //
+    // Initializes a new datum to be edited in the frontend.
+    //
+    $scope.initDatum = function() {
+      return {
+        key: 'Altitude',
+        type: 'line',
+        msg: 74,
+        name: 'alt'
+      };
+    };
+
+    //
+    // Get a datum to edit in the front end from a stream.
+    //
+    $scope.getDatum = function(index) {
+      // Somtimes the index will be null if we removed the model.
+      index |= 0;
+
+      if ($scope.nvGraphData.length == 0) {
+        return;
+      }
+
+      var stream = $scope.nvGraphData[index];
+      return {
+        key: stream.key,
+        type: stream.type,
+        name: stream.name,
+        msg: +stream.msg
+      };
+    };
+
+    //
+    // Update an existing stream.
+    //
+    $scope.updateDataPoint = function(datum, index) {
+      $scope.removeDataPoint(index);
+      $scope.addDataPoint(datum);
+    };
+
+    //
+    // Remove a stream.
+    //
+    $scope.removeDataPoint = function(index) {
+      $scope.nvGraphData.splice(index, 1);
+      $scope.newDatum = {};
+    };
+
+    //
+    // Add a new stream
+    //
     $scope.addDataPoint = function(newDatum) {
       $scope.nvGraphData.push(addDataStream(newDatum.key, newDatum.type,
-      newDatum.msg + ':' + newDatum.name, $scope.flightData.flight));
-      $scope.stream = $scope.nvGraphData[0];
-      console.log($scope.stream);
+        newDatum.msg + ':' + newDatum.name, $scope.flightData.flight));
     };
 
     //
@@ -109,7 +116,6 @@ angular
     var addDataStream = function(name, type, key, data) {
       var filter = key.split(':');
       var stream = {
-        series: $scope.series++,
         msg: filter[0],
         name: filter[1],
         key: name,
