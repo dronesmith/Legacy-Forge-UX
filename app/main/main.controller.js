@@ -28,6 +28,7 @@ angular
 
     //
     // Format data for CSV
+    // TODO rework this with proper batching of data points.
     //
     $scope.getDataAsCSV = function() {
       var csvData = [['Time (s)']], index = 1;
@@ -38,14 +39,49 @@ angular
         var j = 1;
         angular.forEach(stream.values, function(point) {
           if (!csvData[j]) {
-            csvData[j] = [];
+            csvData[j] = [point.x];
           }
 
-          if (!csvData[j][0]) {
-            csvData[j][0] = point.x;
+          // insertion sort for now.
+          if (point.x < csvData[j][0]) {
+            var k = j;
+            while (k > 0) {
+              if (point.x > csvData[k][0]) {
+                csvData.splice(k, 0, [point.x, point.y]);
+                for (var l = 1; l < index; ++l) {
+                  csvData[k][l] = 0;
+                }
+                break;
+              } else if (point.x == csvData[k][0]) {
+                csvData[k][index] = point.y;
+                break;
+              }
+              k--;
+            }
+          } else if (point.x > csvData[j][0]) {
+            var k = j;
+            while (k < csvData.length) {
+              if (point.x < csvData[k][0]) {
+                csvData.splice(k, 0, [point.x, point.y]);
+                for (var l = 1; l < index; ++l) {
+                  csvData[k][l] = 0;
+                }
+                break;
+              } else if (point.x == csvData[k][0]) {
+                csvData[k][index] = point.y;
+                break;
+              }
+              k++;
+            }
+          } else {
+            csvData[j][index] = point.y;
+            // for (var l = 1; l < index; ++l) {
+            //   csvData[k][l] = null;
+            // }
+            // for (var l = index+1; l < $scope.; ++l) {
+            //   csvData[k][l] = null;
+            // }
           }
-
-          csvData[j][index] = point.y;
           ++j;
         });
         ++index;
