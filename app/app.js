@@ -6,10 +6,12 @@ angular
   .module('ForgeApp', [
     'ngResource',
     'ngRoute',
+    'ngSanitize',
     'ui.router',
     'ui.bootstrap',
     'ui.uploader',
-    'nvd3'
+    'nvd3',
+    'ngCsv'
   ])
 
   // Global configuration here

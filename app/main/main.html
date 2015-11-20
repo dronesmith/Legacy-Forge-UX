@@ -23,27 +23,23 @@
                     class="form-control"
                     type="text"
                     ng-model-options="{ updateOn: 'blur' }"
-                    ng-model="options.chart.yAxis1.axisLabel">
+                    ng-model="nvGraphConfig.chart.yAxis1.axisLabel">
                 </fieldset>
 
                 <fieldset class="form-group col-sm-6">
-                  <label for="editData">Edit Data Point</label>
+                  <label for="editData">Edit Data Set</label>
                   <select
                     class="form-control"
-                    ng-show="data.length > 0"
+                    ng-show="nvGraphData.length > 0"
                     ng-model="stream"
                     ng-change="
                       newDataCollapse=false;
                       newDatum=getDatum(stream);
                       inEditMode=true;
                     "
-                    ng-click="
-                      newDataCollapse=false;
-                      newDatum=getDatum(stream);
-                      inEditMode=true;
-                    "
-                    ng-options="s as s.key for s in data track by s.series">
+                    ng-options="s as s.key for s in nvGraphData track by s.series">
                   </select>
+                  <p ng-hide="nvGraphData.length > 0" class="text-danger">No Data Sets added.</p>
                 </fieldset>
 
               </div>
@@ -53,7 +49,7 @@
                   newDataCollapse=false;
                   newDatum = initDatum();
                   inEditMode = false;
-                  ">New Data Point</button>
+                  ">New Data Set</button>
                   <button class="btn btn-default" ng-click="api.refresh()">Refresh</button>
               </fieldset>
 
@@ -101,19 +97,27 @@
                     </fieldset>
 
                     <fieldset class="form-group col-sm-6">
-                      <button ng-show="!inEditMode" class="btn btn-default pull-left" ng-click="addDataPoint(newDatum); newDataCollapse=true;">Add Data Point</button>
+                      <button
+                        ng-show="!inEditMode"
+                        class="btn btn-default pull-left"
+                        ng-click="
+                          addDataPoint(newDatum);
+                          newDataCollapse=true;
+                          api.refresh();">Add Data Set</button>
                       <button
                         ng-show="inEditMode"
                         class="btn btn-default pull-left"
                         ng-click="
                           updateDataPoint(newDatum);
-                          newDataCollapse=true;">Update</button>
+                          newDataCollapse=true;
+                          api.refresh();">Update</button>
                       <button
                         ng-show="inEditMode"
                         class="btn btn-default pull-left"
                         ng-click="
                           removeDataPoint(newDatum);
-                          newDataCollapse=true;">Remove</button>
+                          newDataCollapse=true;
+                          api.refresh();">Remove</button>
                     </fieldset>
 
                     <fieldset class="form-group col-sm-6">
@@ -126,8 +130,13 @@
 
             </form>
 	        </div>
-          <nvd3 options='options' data='data' api="api"></nvd3>
-          <button class="btn btn-default pull-right">Export CSV</button>
+          <nvd3 options="nvGraphConfig" data="nvGraphData" api="api"></nvd3>
+          <button
+            class="btn btn-default pull-right"
+            ng-csv="getDataAsCSV()"
+            ng-disabled="nvGraphData.length == 0"
+            filename="{{CSVExport}}.csv"
+            lazy-load="true">Export CSV</button>
         </div>
       </div>
     </div>
