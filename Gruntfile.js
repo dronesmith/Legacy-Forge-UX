@@ -47,13 +47,13 @@ module.exports = function(grunt) {
           // Specifies directories to scan for @import directives when parsing.
           // Default value is the directory of the source, which is probably what you want.
           paths: [
-            "bower_components/font-awesome/less/**/*.less",
-            "theme/**/*.less"
+            "public/bower_components/font-awesome/less/**/*.less",
+            "public/theme/**/*.less"
           ],
         },
         files: {
           // compilation.css  :  source.less
-          "app/app.css": "app/app.less"
+          "public/app/app.css": "public/app/app.less"
         }
       }
     },
