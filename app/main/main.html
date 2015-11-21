@@ -7,7 +7,15 @@
           <h3>Your Flights</h3>
           <ul class="list-group">
             <li ng-repeat="flight in flights" class="list-group-item">
-              <a href="" ng-click="loadFlight(flight)">{{flight.created | date:'medium'}} | <small>{{flight.kind}}</small></a>
+              <a href="" ng-hide="flight.kind=='sdlog'" ng-click="loadFlight(flight); api.refresh()">
+                {{flight.created | date:'medium'}} | <small>{{flight.kind}}</small>
+              </a>
+              <p
+                uib-tooltip="Binary Log analytics currently not supported."
+                tooltip-placement="top"
+                tooltip-trigger="mouseenter"
+                ng-show="flight.kind=='sdlog'">
+                {{flight.created | date:'medium'}} | <small>{{flight.kind}}</small></p>
             </li>
           </ul>
         </div>

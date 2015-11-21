@@ -7,6 +7,7 @@ angular
       $scope,
       $location,
       $uibModal,
+      $state,
       Session,
       Error) {
 

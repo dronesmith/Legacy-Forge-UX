@@ -1,5 +1,5 @@
 <section id="signupPane">
-    <form class="panel-body" name="signUpForm" novalidate>
+    <form ng-hide="signupSubmitted" class="panel-body" name="signUpForm" novalidate>
       <fieldset
         class="form-group"
         ng-class="{
@@ -145,4 +145,11 @@
         value="Signup">Create Account</button>
       <button class="btn btn-default pull-right" ui-sref="login">Cancel</button>
     </form>
+    <hgroup class="text-center" ng-show="signupSubmitted">
+      <h3>Thanks for signing up!</h3>
+      <p class="lead">
+        You'll need to verify your account in order be apart of the early access.
+      </p>
+      <button class="btn btn-defualt" ui-sref="login">Return to Login</button>
+    </hgroup>
 </section>

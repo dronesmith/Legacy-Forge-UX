@@ -2,7 +2,8 @@
 
 angular
   .module('ForgeApp')
-  .controller('UploaderCtrl', function ($scope, uiUploader, Error) {
+  .controller('UploaderCtrl', function (
+      $scope, $http, uiUploader, User, Error) {
 
     var FileUploadElem = '#uploader form input[type=file]';
 
@@ -22,19 +23,27 @@ angular
       })
     ;
 
+    // Get user information
+    User
+      .get({id: $scope.userInfo.id})
+      .$promise
+      .then(function(data) {
+        $scope.UserObject = data;
+        $scope.uploaderControl.drone = $scope.UserObject.drones[0];
+      }, Error)
+    ;
+
     $scope.upload = function() {
         uiUploader.startUpload({
-          url: '/index/mission',
+          url: '/index/mission/' + $scope.uploaderControl.kind,
           concurrency: 2,
           onProgress: function(file) {
-            console.log(file);
             $scope.progressBar = (file.loaded / file.size) * 100;
-            console.log($scope.progressBar);
+            $scope.uploadStatus = "working";
+            $scope.uploaded = true;
             $scope.$apply();
           },
           onCompleted: function(file, response) {
-            console.log(file);
-            console.log(response);
             $scope.progressBar = 100;
             if (!response) {
               Error({
@@ -43,11 +52,29 @@ angular
                 in: "directive::uploader::controller::$scope.upload::onCompleted"});
               $scope.uploadStatus = "error";
             } else {
-              $scope.uploadStatus = "success";
+              var res = JSON.parse(response); // this is most likely a bug on ui Uploader's part.
+              if (res.error) {
+                Error({status: 400,
+                  statusText: "Parse error.",
+                  data: {error: res.error}});
+                $scope.uploadStatus = "error";
+              } else {
+                if (!$scope.uploaderControl.drone) {
+                  $scope.uploadStatus = "success";
+                } else {
+                  // TODO use drone service
+                  $http
+                    .put('/index/drone/addMission/' + $scope.uploaderControl.drone._id, {missionId: res.id})
+                    .success(function(res) {
+                      $scope.uploadStatus = "success";
+                    }, Error)
+                  ;
+                }
+              }
             }
           },
           onCompletedAll: function(files) {
-            $scope.uploaded = true;
+            //
           },
           onError: function(error) {
             Error(error);

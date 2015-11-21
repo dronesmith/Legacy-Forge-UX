@@ -32,7 +32,6 @@
           name="password"
           placeholder="Password"
           ng-model="user.password"
-          ng-model-options="{ updateOn: 'blur' }"
           ng-pattern="/^(?=.*[a-z]).{8,20}$/"
           required>
           <span ng-show="loginForm.password.$error.pattern" class="text-danger">Please enter a valid password.</span>

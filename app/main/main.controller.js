@@ -7,11 +7,31 @@ angular
     $state,
     $http,
     Session,
+    User,
+    Mission,
     Error
   ) {
 
     $scope.newDatum = {};
     $scope.CSVExport = 'export_' + (new Date()).getTime();
+
+    //
+    // Get flight data
+    //
+    $scope.loadFlight = function(flight) {
+      $http
+        .get('/index/mission/'+flight._id)
+        .then(function(data) {
+          // console.log(data);
+          $scope.flightData = angular.copy(data.data);
+          $scope.nvGraphData = [
+            addDataStream('Pitch', 'line', '30:pitch', $scope.flightData.flight),
+            addDataStream('Yaw', 'bar', '30:yaw', $scope.flightData.flight),
+            addDataStream('Roll', 'area', '30:roll', $scope.flightData.flight)
+          ];
+        }, Error)
+      ;
+    };
 
     //
     // Generate test data
@@ -210,6 +230,9 @@ angular
       }
     };
 
+    //
+    // Get session
+    //
     Session
       .get(
         {},
@@ -220,6 +243,14 @@ angular
           Error(null, 'session:null');
         } else {
           ga('set', '&uid', $scope.userInfo.id);
+
+          // Get mission data
+          Mission
+            .get({user: $scope.userInfo.id, sort: '-created'},
+            function(data) {
+              $scope.flights = data.missions;
+            }, Error)
+          ;
         }
       }, Error)
     ;

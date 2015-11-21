@@ -2,15 +2,15 @@
 
 angular
   .module('ForgeApp')
-  .controller('LoginPaneCtrl', function ($scope, Session) {
+  .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
 
     $scope.update = function(user) {
       Session
-        .authenticate($scope.loginInfo)
+        .authenticate(user)
         .$promise
         .then(function(data) {
-          // $state.go('forge');
-        })
+          $state.go('forge');
+        }, Error)
       ;
     };
   })
