@@ -5,7 +5,8 @@
       <span>{{error.status}} {{error.statusText}}</span>
     </p>
     <p class="lead text-center">
-      <strong>{{error.data.error}}</strong>
+      <strong ng-hide="error.data.error.stack">{{error.data.error}}</strong>
+      <strong ng-show="error.data.error.stack">The database is not happy.</strong>
     </p>
     <p class="text-center"><a href="" ng-click="isCollapsed=!isCollapsed">toggle debug information</a></p>
     <pre uib-collapse="isCollapsed">{{error}}</pre>
