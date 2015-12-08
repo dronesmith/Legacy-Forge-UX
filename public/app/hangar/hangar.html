@@ -1,0 +1,107 @@
+<section id="hangar">
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <h1>Hangar
+                <small>{{drones.length}} Drones in Hangar</small>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section" ng-repeat="drone in drones track by $index">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="alert alert-dismissable alert-success">
+              <strong>Well done!</strong>You successfully read this important alert message.</div>
+            <div
+            class="well">
+              <h2>Unit Stats</h2>
+              <pre>{{drone | json}}</pre>
+          </div>
+          <div class="well">
+            <h2>Cloud</h2>
+            <p>Use our Cloud Feature to back up and sync your data and settings across
+              your drones and computers.</p>
+            <a class="active btn btn-info btn-sm">Click me&nbsp;<span class="badge">42</span></a>
+            <div class="btn-group btn-group-sm">
+              <a class="btn btn-link dropdown-toggle" data-toggle="dropdown"> Dropdown <span class="fa fa-caret-down"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="#">Action</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <img src="https://placekitten.com/200/200?image=5"
+          class="img-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="btn btn-block btn-primary">View More</a>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="nav nav-tabs">
+                <li class="active">
+                  <a href="#">Home</a>
+                </li>
+                <li>
+                  <a href="#">Profile</a>
+                </li>
+                <li>
+                  <a href="#">Messages</a>
+                </li>
+              </ul>
+              <uploader></uploader>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+</section>
