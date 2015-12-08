@@ -23,15 +23,26 @@ angular
       })
     ;
 
-    // Get user information
-    User
-      .get({id: $scope.userInfo.id})
-      .$promise
-      .then(function(data) {
-        $scope.UserObject = data;
-        $scope.uploaderControl.drone = $scope.UserObject.drones[0];
-      }, Error)
-    ;
+    if (!$scope.userInfo) {
+      $scope.$on('session:update', function(ev, data) {
+        $scope.userInfo = data;
+        initUser();
+      });
+    } else {
+      initUser();
+    }
+
+    function initUser() {
+      // Get user information
+      User
+        .get({id: $scope.userInfo.id})
+        .$promise
+        .then(function(data) {
+          $scope.UserObject = data;
+          $scope.uploaderControl.drone = $scope.UserObject.drones[0];
+        }, Error)
+      ;
+    }
 
     $scope.upload = function() {
         uiUploader.startUpload({

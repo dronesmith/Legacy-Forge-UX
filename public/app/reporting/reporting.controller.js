@@ -20,6 +20,25 @@ angular
     //   console.log(data);
     // });
 
+    if (!$scope.userInfo) {
+      $scope.$on('session:update', function(ev, data) {
+        $scope.userInfo = data;
+        initMission();
+      });
+    } else {
+      initMission();
+    }
+
+    function initMission() {
+      // Get mission data
+      Mission
+        .get({user: $scope.userInfo.id, sort: '-created'},
+        function(data) {
+          $scope.flights = data.missions;
+        }, Error)
+      ;
+    }
+
     //
     // Get flight data
     //
@@ -41,7 +60,7 @@ angular
     //
     // Generate test data
     //
-    $http.get('app/main/output.json').then(function(data) {
+    $http.get('app/reporting/output.json').then(function(data) {
       $scope.flightData = data.data;
       $scope.nvGraphData = [
         addDataStream('Pitch Speed', 'line', '30:pitchspeed', $scope.flightData.flight),
@@ -68,6 +87,7 @@ angular
           }
 
           // insertion sort for now.
+          // shut up Esteban
           if (point.x < csvData[j][0]) {
             var k = j;
             while (k > 0) {
@@ -235,29 +255,5 @@ angular
       }
     };
 
-    //
-    // Get session
-    //
-    Session
-      .get(
-        {},
-        function(data) {
-
-        $scope.userInfo = data.userData || null;
-        if (!$scope.userInfo) {
-          Error(null, 'session:null');
-        } else {
-          ga('set', '&uid', $scope.userInfo.id);
-
-          // Get mission data
-          Mission
-            .get({user: $scope.userInfo.id, sort: '-created'},
-            function(data) {
-              $scope.flights = data.missions;
-            }, Error)
-          ;
-        }
-      }, Error)
-    ;
   })
 ;
