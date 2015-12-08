@@ -11,7 +11,8 @@ angular
     'ui.bootstrap',
     'ui.uploader',
     'nvd3',
-    'ngCsv'
+    'ngCsv',
+    'btford.socket-io'
   ])
 
   // Global configuration here
@@ -29,6 +30,22 @@ angular
         url: '/',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
+      })
+
+      // Hangar view
+      .state('hangar', {
+        url: 'hangar',
+        templateUrl: 'app/hangar/hangar.html',
+        controller: 'HangarCtrl',
+        parent: 'forge'
+      })
+
+      // Reporting view
+      .state('analytics', {
+        url: 'analytics',
+        templateUrl: 'app/reporting/reporting.html',
+        controller: 'ReportingCtrl',
+        parent: 'forge'
       })
 
       // Upload flight state

@@ -13,8 +13,9 @@
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav pull-right">
           <li> <a href="" ng-click="editAccount()">Account</a> </li>
+          <li ng-class="{active: isActive('/hangar')}"> <a href="" ui-sref="hangar">Hangar</a> </li>
           <li ng-class="{active: isActive('/upload')}"> <a href="" ui-sref="upload">Upload Flight</a> </li>
-          <li ng-class="{active: isActive('/')}"> <a href="" ui-sref="forge">Analytics</a> </li>
+          <li ng-class="{active: isActive('/analytics')}"> <a href="" ui-sref="analytics">Analytics</a> </li>
           <li> <a target="_self" href="assets/tools/recordmav.zip" download="recordmav.zip">MAV Tools</a> </li>
           <li> <a target="_self" href="assets/tools/api.pdf" download="api.pdf">API Docs</a> </li>
           <li> <a href="" ng-click="logout()">Log Out</a> </li>
