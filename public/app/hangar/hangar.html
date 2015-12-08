@@ -12,7 +12,27 @@
         </div>
       </div>
     </div>
-    <div class="section" ng-repeat="drone in drones track by $index">
+    <uib-accordion close-others="true">
+      <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
+        <uib-accordion-heading>
+          <p class="text-right">
+            <span class="pull-left lead">{{drone.name || "drone-" + drone.firmwareId}}</span>
+            <span class="badge text-info">{{drone.missions.length}} Missions</span>
+            <span
+              class="label"
+              ng-class="{
+                'label-success': liveDroneData[drone._id] == 'online',
+                'label-danger': liveDroneData[drone._id] == 'offline'
+                }">
+                {{liveDroneData[drone._id]}}
+            </span>
+          </p>
+        </uib-accordion-heading>
+        <pre>{{drone | json}}</pre>
+      </uib-accordion-group>
+    </uib-accordion>
+    <!-- TODO rara -->
+    <!-- <div class="section" ng-repeat="drone in drones track by $index">
       <div class="container">
         <div class="row">
           <div class="col-md-4">
@@ -89,9 +109,9 @@
                 <li>
                   <a href="#">Messages</a>
                 </li>
-              </ul>
+              </ul> -->
               <!-- Uploader polls user each time. That's why there's so many requests. FIXME -->
-              <uploader></uploader>
+              <!-- <uploader></uploader>
             </div>
           </div>
           <ul class="list-group">
@@ -104,5 +124,5 @@
         </div>
       </div>
     </div>
-    </div>
+    </div> -->
 </section>

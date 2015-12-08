@@ -9,16 +9,11 @@ angular
     Session,
     User,
     Mission,
-    Error,
-    Stream
+    Error
   ) {
 
     $scope.newDatum = {};
     $scope.CSVExport = 'export_' + (new Date()).getTime();
-
-    // Stream.on('message', function(data) {
-    //   console.log(data);
-    // });
 
     if (!$scope.userInfo) {
       $scope.$on('session:update', function(ev, data) {
