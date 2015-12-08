@@ -2,7 +2,7 @@
 
 angular
   .module('ForgeApp')
-  .controller('HangarCtrl', function ($scope, User) {
+  .controller('HangarCtrl', function ($scope, User, Error) {
 
     if (!$scope.userInfo) {
       $scope.$on('session:update', function(ev, data) {
