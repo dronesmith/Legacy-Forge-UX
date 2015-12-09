@@ -10,6 +10,9 @@ angular
       addMission: {
         method: 'PUT',
         url: '/index/drone/addMission'
+      },
+      update: {
+        method: 'PUT'
       }
     });
   })

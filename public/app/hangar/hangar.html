@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <uib-accordion close-others="true">
+    <uib-accordion close-others="true" ng-click="footerOpen=!footerOpen">
       <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
         <uib-accordion-heading>
           <p class="text-right">
@@ -21,14 +21,71 @@
             <span
               class="label"
               ng-class="{
-                'label-success': liveDroneData[drone._id] == 'online',
-                'label-danger': liveDroneData[drone._id] == 'offline'
+                'label-success': liveDroneData[drone._id].status == 'online',
+                'label-danger': liveDroneData[drone._id].status == 'offline',
+                'label-info': !liveDroneData
                 }">
-                {{liveDroneData[drone._id]}}
+                {{liveDroneData[drone._id].status || "working..."}}
             </span>
           </p>
         </uib-accordion-heading>
-        <pre>{{drone | json}}</pre>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="well" ng-init="isCollapsed = true">
+              <h3>{{drone.name || "drone-" + drone.firmwareId}} <small>
+                  <a href="" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
+              <div uib-collapse="isCollapsed">
+                <form class="well-sm">
+                  <fieldset class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" type="text" ng-model="drone.name">
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label>System Id</label>
+                    <input class="form-control" type="number" ng-model="drone.systemId" min="1" max="254">
+                  </fieldset>
+                </form>
+              </div>
+              <p>
+                <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
+                <strong>Hardware Id:</strong> {{drone.hardwareId}} <br>
+                <strong>Type:</strong> {{drone.type}} <br>
+                <strong>Manufacturer:</strong> {{drone.manufacturer || "unknown"}} <br>
+                <strong>System Id: </strong> {{drone.systemId}} <br>
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <img class="img-responsive" src="assets/img/lucismall.png">
+          </div>
+          <div class="col-sm-4">
+            <hgroup class="text-left">
+              <h4><span class="glyphicon glyphicon-flash"></span>
+              Power</h4>
+              <uib-progressbar ng-hide="liveDroneData[drone._id] == 'offline'"  type="info" max="100" value="50"></uib-progressbar>
+              <p ng-show="liveDroneData[drone._id] == 'offline'">Offline.</p>
+            </hgroup>
+
+            <hgroup class="text-left" ng-init="usage=(drone.missions.length / 200) * 100">
+              <h4><span class="glyphicon glyphicon-cloud"></span>
+              Cloud Usage</h4>
+              <uib-progressbar type="info" max="100" value="usage"></uib-progressbar>
+            </hgroup>
+
+            <hgroup class="text-left" ng-init="usageDrone=(drone.missions.length / 50) * 100">
+              <h4><span class="glyphicon glyphicon-hdd"></span>
+              Drone Memory</h4>
+              <uib-progressbar ng-hide="liveDroneData[drone._id] == 'offline'" type="info" max="100" value="usageDrone"></uib-progressbar>
+              <p ng-show="liveDroneData[drone._id] == 'offline'">Offline.</p>
+            </hgroup>
+          </div>
+        </div>
+        <div class="accordionFooter">
+          <hr>
+          <button class="pull-right btn btn-default" ng-click="deleteDrone(drone)">
+            <span class="glyphicon glyphicon-trash">
+          </button>
+        </div>
       </uib-accordion-group>
     </uib-accordion>
     <!-- TODO rara -->

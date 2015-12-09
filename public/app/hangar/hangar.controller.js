@@ -2,11 +2,15 @@
 
 angular
   .module('ForgeApp')
-  .controller('HangarCtrl', function ($scope, User, Error, Stream) {
+  .controller('HangarCtrl', function ($scope, User, Drone, Error, Stream, $uibModal) {
 
     Stream.on('hb', function(data) {
       console.log(data);
       $scope.liveDroneData = data;
+
+      if (Object.keys($scope.liveDroneData).length != $scope.drones.length) {
+        init();
+      }
     });
 
     if (!$scope.userInfo) {
@@ -29,7 +33,49 @@ angular
           return $scope.liveDroneData[k];
         }
       }
-    }
+    };
+
+    $scope.deleteDrone = function(drone) {
+      var modal = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/components/alertModal/alertModal.html',
+        controller: 'alertModalCtrl',
+        resolve: {
+          title: function() {
+            return '!! Warning !!';
+          },
+          text: function () {
+            return 'By clicking confirm, all flights associated with this drone will be removed! '
+            + 'Any data stored on your drone will remain. Are you really sure you want to do this?';
+          }
+        }
+      });
+
+      modal.result.then(function (selectedItem) {
+        Drone
+          .delete({id: drone._id})
+          .$promise
+          .then(function(data) {
+            Stream.emit('drone:delete', drone);
+            init();
+          }, Error);
+      }, function () {
+      });
+    };
+
+    $scope.updateDrone = function(isCollapsed, drone) {
+      if (!isCollapsed) {
+        return;
+      }
+
+      Drone
+        .update({id: drone._id}, drone)
+        .$promise
+        .then(function(data) {
+          init();
+        }, Error)
+      ;
+    };
 
     function init() {
       User
