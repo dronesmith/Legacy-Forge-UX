@@ -8,9 +8,6 @@ angular
       console.log(data);
       $scope.liveDroneData = data;
 
-      if (Object.keys($scope.liveDroneData).length != $scope.drones.length) {
-        init();
-      }
     });
 
     if (!$scope.userInfo) {
@@ -21,6 +18,11 @@ angular
     } else {
       init();
     }
+
+    // when server sends a db update.
+    Stream.on('update', function(data) {
+      init();
+    });
 
     $scope.getLiveDrone = function(id) {
       if (!$scope.liveDroneData) {

@@ -62,8 +62,8 @@
             <hgroup class="text-left">
               <h4><span class="glyphicon glyphicon-flash"></span>
               Power</h4>
-              <uib-progressbar ng-hide="liveDroneData[drone._id] == 'offline'"  type="info" max="100" value="50"></uib-progressbar>
-              <p ng-show="liveDroneData[drone._id] == 'offline'">Offline.</p>
+              <uib-progressbar ng-hide="liveDroneData[drone._id].status == 'offline'"  type="info" max="100" value="50"></uib-progressbar>
+              <p ng-show="liveDroneData[drone._id].status == 'offline'">Offline.</p>
             </hgroup>
 
             <hgroup class="text-left" ng-init="usage=(drone.missions.length / 200) * 100">
@@ -75,8 +75,8 @@
             <hgroup class="text-left" ng-init="usageDrone=(drone.missions.length / 50) * 100">
               <h4><span class="glyphicon glyphicon-hdd"></span>
               Drone Memory</h4>
-              <uib-progressbar ng-hide="liveDroneData[drone._id] == 'offline'" type="info" max="100" value="usageDrone"></uib-progressbar>
-              <p ng-show="liveDroneData[drone._id] == 'offline'">Offline.</p>
+              <uib-progressbar ng-hide="liveDroneData[drone._id].status == 'offline'" type="info" max="100" value="usageDrone"></uib-progressbar>
+              <p ng-show="liveDroneData[drone._id].status == 'offline'">Offline.</p>
             </hgroup>
           </div>
         </div>
