@@ -5,7 +5,7 @@ angular
   .controller('HangarCtrl', function ($scope, User, Drone, Error, Stream, $uibModal) {
 
     Stream.on('hb', function(data) {
-      console.log(data);
+      // console.log(data);
       $scope.liveDroneData = data;
 
     });
