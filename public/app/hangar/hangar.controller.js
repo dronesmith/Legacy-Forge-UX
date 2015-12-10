@@ -10,6 +10,18 @@ angular
 
     });
 
+    $scope.mavStream = {};
+
+    Stream.on('mavlink', function(data) {
+      $scope.preview = data;
+
+      if (!$scope.mavStream[data.drone]) {
+        $scope.mavStream[data.drone] = {};
+      }
+
+      $scope.mavStream[data.drone][data.payload.header] = data.payload.data;
+    });
+
     if (!$scope.userInfo) {
       $scope.$on('session:update', function(ev, data) {
         $scope.userInfo = data;
