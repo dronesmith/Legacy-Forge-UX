@@ -29,6 +29,8 @@ angular
           //   }
 					// });
 
+          // console.log(elem, $(elem)[0]);
+
 					function loadModel(modelUrl) {
 
              loader1.load(modelUrl, function(geometry) {
@@ -54,16 +56,16 @@ angular
 						camera.position.set(2, 4, 5);
 
             // Add controls for camera
-            // controls = new THREE.TrackballControls(camera);
-	          // controls.rotateSpeed = 3.0;
-	          // controls.zoomSpeed = 0.4;
-	          // controls.panSpeed = 0.8;
-            //
-	          // controls.noZoom = false;
-	          // controls.noPan = false;
-            //
-	          // controls.staticMoving = true;
-	          // controls.dynamicDampingFactor = 0.3;
+            controls = new THREE.TrackballControls(camera, $(elem)[0]);
+	          controls.rotateSpeed = 3.0;
+	          controls.zoomSpeed = 0.4;
+	          controls.panSpeed = 0.8;
+
+	          controls.noZoom = false;
+	          controls.noPan = false;
+
+	          controls.staticMoving = true;
+	          controls.dynamicDampingFactor = 0.3;
 
             // Init scene
 						scene = new THREE.Scene();
@@ -94,7 +96,12 @@ angular
 						elem[0].appendChild(renderer.domElement);
 
 						// Events
-						window.addEventListener('resize', onWindowResize, false);
+            // FIXME
+						// window.addEventListener('resize', onWindowResize, false);
+
+            scope.$watch(function() { return $(elem).is(':visible') }, function() {
+              controls.handleResize();
+            });
 					}
 
           // Render axis
@@ -157,16 +164,19 @@ angular
 
 					//
 					function onWindowResize(event) {
-						// renderer.setSize(window.innerWidth, window.innerHeight);
-						// camera.aspect = window.innerWidth / window.innerHeight;
-						// camera.updateProjectionMatrix();
+            var height = $(elem).height();
+            var width = $(elem).width();
+            console.log(width);
+						renderer.setSize(width, 240);
+						camera.aspect = width / 240;
+						camera.updateProjectionMatrix();
 					}
 
 					//
 					var t = 0;
 
 					function animate() {
-            // controls.update();
+            controls.update();
 						requestAnimationFrame(animate);
 						render();
 					}
@@ -222,7 +232,7 @@ angular
 
 					//
 					function render() {
-            if (scope.bind) {
+            if (scope.bind && mesh) {
               mesh.rotation.y = scope.bind['ATTITUDE'].yaw;
 				      mesh.rotation.x = scope.bind['ATTITUDE'].pitch;
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
@@ -246,11 +256,12 @@ angular
               climbVect.position.z = mesh.position.z;
               climbVect.scale.y = 1 + scope.bind['VFR_HUD'].climb;
             }
-						var timer = Date.now() * 0.0005;
-						camera.position.x = Math.cos(timer) * 10;
-						camera.position.y = 4;
-						camera.position.z = Math.sin(timer) * 10;
+						// var timer = Date.now() * 0.0005;
+						// camera.position.x = Math.cos(timer) * 10;
+						// camera.position.y = 4;
+						// camera.position.z = Math.sin(timer) * 10;
             if (mesh) {
+              // camera.position.y = 4 + mesh.position.y;
               camera.lookAt(mesh.position);
             } else {
             	camera.lookAt(scene.position);
