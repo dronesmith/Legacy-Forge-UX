@@ -56,14 +56,17 @@
             </div>
           </div>
           <div class="col-sm-4">
-            <!-- <img class="img-responsive" src="assets/img/lucismall.png"> -->
-            <renderer bind="mavStream[drone._id]"></renderer>
+            <img ng-show="liveDroneData[drone._id].status == 'offline'" class="img-responsive" src="assets/img/lucismall.png">
+            <renderer ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
           </div>
           <div class="col-sm-4">
             <hgroup class="text-left">
               <h4><span class="glyphicon glyphicon-flash"></span>
               Power</h4>
-              <uib-progressbar ng-hide="liveDroneData[drone._id].status == 'offline'"  type="info" max="100" value="50"></uib-progressbar>
+              <uib-progressbar
+                ng-hide="liveDroneData[drone._id].status == 'offline'"
+                type="info" max="100" value="mavStream[drone._id]['SYS_STATUS'].battery_remaining">
+              </uib-progressbar>
               <p ng-show="liveDroneData[drone._id].status == 'offline'">Offline.</p>
             </hgroup>
 
@@ -81,14 +84,30 @@
             </hgroup>
           </div>
         </div>
-        <!-- <pre ng-show="liveDroneData[drone._id].status == 'online'">{{mavStream[drone._id]['ATTITUDE'] | json}}</pre> -->
+
         <div ng-show="liveDroneData[drone._id].status == 'online'" class="row">
           <div class="col-sm-4">
-            <p><strong>Roll:</strong> {{mavStream[drone._id]['ATTITUDE'].roll}}</p>
-            <p><strong>Pitch:</strong> {{mavStream[drone._id]['ATTITUDE'].pitch}}</p>
-            <p><strong>Yaw:</strong> {{mavStream[drone._id]['ATTITUDE'].yaw}}</p>
+            <p><strong>Roll:</strong> {{(mavStream[drone._id]['ATTITUDE'].roll * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Pitch:</strong> {{(mavStream[drone._id]['ATTITUDE'].pitch * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Yaw:</strong> {{(mavStream[drone._id]['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Throttle:</strong> {{mavStream[drone._id]['VFR_HUD'].throttle}}</p>
+          </div>
+          <div class="col-sm-4">
+            <p><strong>Altitude:</strong> {{(mavStream[drone._id]['VFR_HUD'].alt).toFixed(2)}}</p>
+            <p><strong>Climb:</strong> {{(mavStream[drone._id]['VFR_HUD'].climb).toFixed(2)}}</p>
+            <p><strong>Heading:</strong> {{mavStream[drone._id]['VFR_HUD'].heading}}</p>
+            <!-- <p><strong>Air Speed:</strong> {{mavStream[drone._id]['VFR_HUD'].airspeed}}</p> -->
+            <p><strong>Ground Speed:</strong> {{(mavStream[drone._id]['VFR_HUD'].groundspeed).toFixed(2)}}</p>
+          </div>
+          <div class="col-sm-4">
+            <p><strong>Status:</strong> {{mavStream[drone._id]['STATUSTEXT'].text}}</p>
           </div>
         </div>
+          <strong ng-hide="liveDroneData[drone._id].status == 'offline'">Mission Progess</strong>
+          <uib-progressbar
+            ng-hide="liveDroneData[drone._id].status == 'offline'"
+            type="info" min="180000" max="750000" value="mavStream[drone._id]['ATTITUDE'].time_boot_ms"></uib-progressbar>
+          <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
         <div class="accordionFooter">
           <hr>
           <button class="pull-right btn btn-default" ng-click="deleteDrone(drone)">
