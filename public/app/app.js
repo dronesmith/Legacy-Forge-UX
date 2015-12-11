@@ -32,6 +32,12 @@ angular
         controller: 'MainCtrl'
       })
 
+      .state('live', {
+        url: '/live/:id',
+        templateUrl: 'app/fullscreen/fullscreen.html',
+        controller: 'FullScreenCtrl'
+      })
+
       // Hangar view
       .state('hangar', {
         url: 'hangar',

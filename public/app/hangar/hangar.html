@@ -53,12 +53,12 @@
                 <strong>Manufacturer:</strong> {{drone.manufacturer || "unknown"}} <br>
                 <strong>System Id: </strong> {{drone.systemId}} <br>
               </p>
+              <a href="" target="_blank" class="btn btn-default" ui-sref="live({id: drone._id})">Launch Fullscreen</a>
             </div>
           </div>
           <div class="col-sm-4">
             <img ng-show="liveDroneData[drone._id].status == 'offline'" class="img-responsive" src="assets/img/lucismall.png">
-            <renderer style="width: 100%; height: 240px;"
-              ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
+            <renderer fullscreen="false" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
           </div>
           <div class="col-sm-4">
             <hgroup class="text-left">

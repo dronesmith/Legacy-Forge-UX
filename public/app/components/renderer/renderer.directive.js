@@ -6,7 +6,8 @@ angular
 			return {
 				restrict: "E",
 				scope: {
-					bind: "=bind"
+					bind: "=bind",
+          fullscreen: "=fullscreen"
 				},
 				link: function (scope, elem, attr) {
 					var camera;
@@ -51,8 +52,15 @@ angular
 					animate();
 
 					function init() {
+            var width = 320, height = 240;
+
+            if (scope.fullscreen) {
+              width = window.innerWidth;
+              height = window.innerHeight;
+            }
+
             // Init camera
-						camera = new THREE.PerspectiveCamera(50, 320 / 240, 1, 2000);
+						camera = new THREE.PerspectiveCamera(50, width / height, 1, 2000);
 						camera.position.set(2, 4, 5);
 
             // Add controls for camera
@@ -91,13 +99,13 @@ angular
 
 						// Renderer
 						renderer = new THREE.WebGLRenderer({antialias: true});
-						renderer.setSize(320, 240);
+						renderer.setSize(width, height);
             renderer.setClearColor(0xadd5f7);
 						elem[0].appendChild(renderer.domElement);
 
 						// Events
             // FIXME
-						// window.addEventListener('resize', onWindowResize, false);
+						window.addEventListener('resize', onWindowResize, false);
 
             scope.$watch(function() { return $(elem).is(':visible') }, function() {
               controls.handleResize();
@@ -164,12 +172,11 @@ angular
 
 					//
 					function onWindowResize(event) {
-            var height = $(elem).height();
-            var width = $(elem).width();
-            console.log(width);
-						renderer.setSize(width, 240);
-						camera.aspect = width / 240;
-						camera.updateProjectionMatrix();
+            if (scope.fullscreen) {
+              renderer.setSize(window.innerWidth, window.innerHeight);
+  						camera.aspect = window.innerWidth / window.innerHeight;
+  						camera.updateProjectionMatrix();
+            }
 					}
 
 					//
