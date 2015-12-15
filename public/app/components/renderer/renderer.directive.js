@@ -7,7 +7,8 @@ angular
 				restrict: "E",
 				scope: {
 					bind: "=bind",
-          fullscreen: "=fullscreen"
+          fullscreen: "=fullscreen",
+          basealt: "=basealt"
 				},
 				link: function (scope, elem, attr) {
 					var camera;
@@ -57,6 +58,10 @@ angular
             if (scope.fullscreen) {
               width = window.innerWidth;
               height = window.innerHeight;
+            }
+
+            if (!scope.basealt) {
+              scope.basealt = 0;
             }
 
             // Init camera
@@ -245,7 +250,7 @@ angular
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
 
               // altitude
-              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - 520) / 2);
+              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - scope.basealt) / 2);
 
               // location
               mesh.position.z = -(scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;

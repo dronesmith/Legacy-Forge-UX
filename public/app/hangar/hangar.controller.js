@@ -11,6 +11,23 @@ angular
     });
 
     $scope.mavStream = {};
+    $scope.simStream = {};
+    $scope.simStatus = 'offline';
+
+    var simlyCounter = 5;
+
+    setInterval(function() {
+      if (simlyCounter-- <= 0) {
+        $scope.simStatus = 'offline';
+      }
+    }, 10 * 1000);
+
+    // got something from simly
+    Stream.on('sim:mavlink', function(data) {
+      $scope.simStream[data.header] = data.data;
+      simlyCounter = 5;
+      $scope.simStatus = 'online';
+    });
 
     Stream.on('mavlink', function(data) {
       $scope.preview = data;
