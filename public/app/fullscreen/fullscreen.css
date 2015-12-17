@@ -1,0 +1,64 @@
+#fullscreen {
+  -webkit-perspective:200px;
+      -moz-perspective:200px;
+      perspective:200px;
+      -webkit-perspective-origin:center 400px /* 300px + 200px/2 */;
+      -moz-perspective-origin:center 400px /* 300px + 200px/2 */;
+      perspective-origin:center 400px /* 300px + 200px/2 */;
+      -webkit-transform-style:preserve-3d;
+      -moz-transform-style:preserve-3d;
+      transform-style:preserve-3d;
+}
+#fullscreen #hud svg {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+#fullscreen #floghtheading {
+  position: fixed;
+  top: -15%;
+}
+
+#fullscreen #angleArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #throttleArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #groundspeedArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #hud p {
+  position: absolute;
+  z-index: 10;
+  font-size: 10px;
+  color: #BBB;
+  font-family: monospace;
+}
+
+#fullscreen #timeline {
+  position: absolute;
+  z-index: 100;
+  bottom: 0%;
+  padding: 10px 10px 10px 10px;
+  background-color: #bbb;
+  width: 100% !important;
+}
+
+#fullscreen #timeline p {
+  color: #000;
+  font-size: 12px;
+  bottom: 6px;
+}
+
+.cameraTxt {
+  right: 28%;
+}

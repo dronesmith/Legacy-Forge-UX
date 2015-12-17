@@ -18,6 +18,7 @@ angular
 					var previous;
           var headingVect;
           var climbVect;
+          var envMap;
 
 					// init scene
 					init();
@@ -33,15 +34,73 @@ angular
 
           // console.log(elem, $(elem)[0]);
 
+          function initEnvMap() {
+            var urls = [
+              "assets/img/renderer/desertsky_left.jpg",
+              "assets/img/renderer/desertsky_right.jpg",
+              "assets/img/renderer/desertsky_top.jpg",
+              "assets/img/renderer/desertsky_top.jpg",
+              "assets/img/renderer/desertsky_back.jpg",
+              "assets/img/renderer/desertsky_front.jpg"
+            ];
+
+            var loader = new THREE.CubeTextureLoader();
+
+            var cubemap = loader.load(urls);
+            cubemap.format = THREE.RGBFormat;
+            return cubemap;
+          }
+
+          function initSkyBox() {
+            var urls = [
+              "assets/img/renderer/desertsky_left.jpg",
+              "assets/img/renderer/desertsky_right.jpg",
+              "assets/img/renderer/desertsky_top.jpg",
+              "assets/img/renderer/desertsky_top.jpg",
+              "assets/img/renderer/desertsky_back.jpg",
+              "assets/img/renderer/desertsky_front.jpg"
+            ];
+
+            var loader = new THREE.TextureLoader();
+
+            var materialArray = [];
+          	for (var i = 0; i < 6; i++) {
+              var txt = loader.load(urls[i]);
+          		materialArray.push(new THREE.MeshBasicMaterial({
+          			map: txt,
+          			side: THREE.BackSide
+          		}));
+            }
+
+              var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+          	// var skyMaterial =  new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
+
+            var size = 2000;
+            var skyboxMesh = new THREE.Mesh(new THREE.CubeGeometry(size, size, size), skyMaterial);
+            return skyboxMesh;
+          }
+
 					function loadModel(modelUrl) {
 
              loader1.load(modelUrl, function(geometry) {
                var material;
                if (geometry.hasColors) {
-                 material = new THREE.MeshPhongMaterial({color: 0xff00ff, opacity: geometry.alpha, vertexColors: THREE.NoColors });
+                 material = new THREE.MeshLambertMaterial({
+                   color:0xff00ff,
+                   opacity: geometry.alpha,
+                   vertexColors: THREE.NoColors,
+                   reflectivity: .25,
+                   envMap: envMap});
+                //  material = new THREE.MeshPhongMaterial({color: 0xff00ff, opacity: geometry.alpha, vertexColors: THREE.NoColors });
                  mesh = new THREE.Mesh( geometry, material );
                } else {
-                 material = new THREE.MeshPhongMaterial({color: 0xff00ff, opacity: 1.0, vertexColors: THREE.NoColors });
+                 material = new THREE.MeshLambertMaterial({
+                   color:0xff00ff,
+                   opacity: geometry.alpha,
+                   vertexColors: THREE.NoColors,
+                   reflectivity: .25,
+                   envMap: envMap});
+                //  material = new THREE.MeshPhongMaterial({color: 0xff00ff, opacity: 1.0, vertexColors: THREE.NoColors });
                  mesh = new THREE.Mesh( geometry, material);
                }
                mesh.scale.set(.25,.25,.25);
@@ -52,7 +111,7 @@ angular
 					loadModel("assets/models/quark_simple.stl");
 					animate();
 
-					function init() {
+					function init(aa) {
             var width = 320, height = 240;
 
             if (scope.fullscreen) {
@@ -63,6 +122,8 @@ angular
             if (!scope.basealt) {
               scope.basealt = 0;
             }
+
+            envMap = initEnvMap();
 
             // Init camera
 						camera = new THREE.PerspectiveCamera(50, width / height, 1, 2000);
@@ -82,7 +143,7 @@ angular
 
             // Init scene
 						scene = new THREE.Scene();
-						scene.fog = new THREE.FogExp2(0xadd5f7, 0.035);
+						scene.fog = new THREE.FogExp2(0xadd5f7, 0.0006);
 
 						// Lights
 						scene.add(new THREE.AmbientLight(0x404040));
@@ -102,8 +163,10 @@ angular
             climbVect = renderClimb();
             scene.add(climbVect);
 
+            scene.add(initSkyBox());
+
 						// Renderer
-						renderer = new THREE.WebGLRenderer({antialias: true});
+						renderer = new THREE.WebGLRenderer({antialias: aa || false});
 						renderer.setSize(width, height);
             renderer.setClearColor(0xadd5f7);
 						elem[0].appendChild(renderer.domElement);
@@ -228,7 +291,18 @@ angular
           function renderPlane() {
             var plane = new THREE.Object3D();
             var geometry = new THREE.PlaneGeometry( 1000, 1000, 1 );
-            var material = new THREE.MeshBasicMaterial( {color: 0x265902, side: THREE.DoubleSide} );
+            // var material = new THREE.MeshBasicMaterial( {color: 0x265902, side: THREE.DoubleSide} );
+            var loader = new THREE.TextureLoader();
+            var texture = loader.load('assets/img/renderer/grid3.png');
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(512, 512);
+            var material = new THREE.MeshLambertMaterial({
+              map: texture,
+              emissive: 0x265902,
+              side: THREE.DoubleSide,
+              reflectivity: .1,
+              envMap: envMap});
             plane.add(new THREE.Mesh( geometry, material ));
             plane.rotation.x = 3.14159 / 2;
             return plane;
@@ -250,7 +324,7 @@ angular
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
 
               // altitude
-              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - scope.basealt) / 2);
+              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - 512 + 10) / 2);
 
               // location
               mesh.position.z = -(scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
@@ -273,11 +347,13 @@ angular
 						// camera.position.y = 4;
 						// camera.position.z = Math.sin(timer) * 10;
             if (mesh) {
-              // camera.position.y = 4 + mesh.position.y;
+              camera.position.y = 4 + mesh.position.y;
               camera.lookAt(mesh.position);
             } else {
             	camera.lookAt(scene.position);
             }
+
+            // Render world
 						renderer.render(scene, camera);
 					}
 				}
