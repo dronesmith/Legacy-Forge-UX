@@ -86,7 +86,7 @@ angular
                var material;
                if (geometry.hasColors) {
                  material = new THREE.MeshLambertMaterial({
-                   color:0xff00ff,
+                   color:0x3366dd,
                    opacity: geometry.alpha,
                    vertexColors: THREE.NoColors,
                    reflectivity: .25,
@@ -95,7 +95,7 @@ angular
                  mesh = new THREE.Mesh( geometry, material );
                } else {
                  material = new THREE.MeshLambertMaterial({
-                   color:0xff00ff,
+                   color:0x3366dd,
                    opacity: geometry.alpha,
                    vertexColors: THREE.NoColors,
                    reflectivity: .25,
@@ -324,11 +324,13 @@ angular
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
 
               // altitude
-              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - 512 + 10) / 2);
+              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - 512));
 
               // location
-              mesh.position.z = -(scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
-              mesh.position.x = -(scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
+              if (scope.bind['VFR_HUD'].groundspeed >= 0.1) {
+                mesh.position.z += -(scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 20;
+                mesh.position.x += -(scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 20;
+              }
 
               headingVect.scale.z = 1 -  (scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
               headingVect.scale.x = 1 - (scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
@@ -347,8 +349,39 @@ angular
 						// camera.position.y = 4;
 						// camera.position.z = Math.sin(timer) * 10;
             if (mesh) {
-              camera.position.y = 4 + mesh.position.y;
-              camera.lookAt(mesh.position);
+              // camera.position.y = 4 + mesh.position.y;
+
+              // Update camera kinematics
+              switch (scope.bind.camera) {
+                case 'follow':
+                  var relativeCameraOffset = new THREE.Vector3(0,20,100);
+                  var cameraOffset = relativeCameraOffset.applyMatrix4(mesh.matrixWorld);
+
+                  camera.position.x = cameraOffset.x;
+                  camera.position.y = cameraOffset.y;
+                  camera.position.z = cameraOffset.z;
+                  camera.lookAt(mesh.position);
+                  mesh.visible = true;
+                  headingVect.visible = true;
+                  break;
+
+                case 'pilot':
+                  camera.position.set(0, 5, 20);
+                  camera.lookAt(mesh.position);
+                  mesh.visible = true;
+                  headingVect.visible = true;
+                  break;
+                case 'fps':
+                  camera.position.x = mesh.position.x;
+                  camera.position.y = mesh.position.y;
+                  camera.position.z = mesh.position.z;
+                  camera.rotation.x = mesh.rotation.x;
+                  camera.rotation.y = mesh.rotation.y;
+                  camera.rotation.z = mesh.rotation.z;
+                  mesh.visible = false;
+                  headingVect.visible = false;
+                  break;
+              }
             } else {
             	camera.lookAt(scene.position);
             }

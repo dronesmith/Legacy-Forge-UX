@@ -8,8 +8,7 @@ angular
     $scope.droneId = $stateParams.id;
     $scope.mavStream = {};
     $scope.simStream = {};
-
-    $scope.cameraMode = 'chase';
+    $scope.cameraMode = 'follow';
 
     // Null drone means use sim.
     if (!$scope.droneId) {
@@ -35,7 +34,7 @@ angular
         }
 
         $scope.mavStream[data.drone][data.payload.header] = data.payload.data;
-        updateHud($scope.mavStream[data.drone])
+        updateHud($scope.mavStream[data.drone]);
       });
     }
 
@@ -69,6 +68,8 @@ angular
       var height = window.innerHeight;
       var loch;
       var locw;
+
+      stream.camera = $scope.cameraMode;
 
       $('#throttleHeading').css({
         top: (height / 2) - 60,
