@@ -10,9 +10,11 @@ angular
     'ui.router',
     'ui.bootstrap',
     'ui.uploader',
+    'ui.map',
     'nvd3',
     'ngCsv',
     'btford.socket-io'
+
   ])
 
   // Global configuration here
@@ -94,3 +96,8 @@ angular
     ;
   })
 ;
+
+// Init Google Maps
+window.onGoogleReady = function() {
+  angular.bootstrap(document.getElementById("map"), ['ui.map']);
+};

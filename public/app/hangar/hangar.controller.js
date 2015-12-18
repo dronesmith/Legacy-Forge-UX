@@ -25,6 +25,7 @@ angular
     // got something from simly
     Stream.on('sim:mavlink', function(data) {
       $scope.simStream[data.header] = data.data;
+      $scope.simStream.camera = 'follow';
       simlyCounter = 5;
       $scope.simStatus = 'online';
     });
@@ -37,6 +38,7 @@ angular
       }
 
       $scope.mavStream[data.drone][data.payload.header] = data.payload.data;
+      $scope.mavStream[data.drone].camera = 'follow';
     });
 
     if (!$scope.userInfo) {

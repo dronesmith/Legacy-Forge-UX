@@ -348,7 +348,7 @@ angular
 						// camera.position.x = Math.cos(timer) * 10;
 						// camera.position.y = 4;
 						// camera.position.z = Math.sin(timer) * 10;
-            if (mesh) {
+            if (mesh && scope.bind) {
               // camera.position.y = 4 + mesh.position.y;
 
               // Update camera kinematics

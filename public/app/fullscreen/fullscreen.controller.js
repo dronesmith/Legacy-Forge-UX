@@ -10,6 +10,13 @@ angular
     $scope.simStream = {};
     $scope.cameraMode = 'follow';
 
+    $scope.mapOptions = {
+      // vegas
+      center: new google.maps.LatLng(36.1215, -115.1739),
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
     // Null drone means use sim.
     if (!$scope.droneId) {
       Stream.on('sim:mavlink', function(data) {
@@ -38,6 +45,30 @@ angular
       });
     }
 
+    $scope.updateGPS = function(stream) {
+      if (stream['GPS_GLOBAL_ORIGIN']) {
+
+        var latlon = new google.maps.LatLng(
+          stream['GPS_GLOBAL_ORIGIN'].latitude / 1e7,
+          stream['GPS_GLOBAL_ORIGIN'].longitude / 1e7);
+
+        $scope.myMap.panTo(latlon);
+
+        var marker = new google.maps.Marker({
+          position: latlon,
+          map: $scope.myMap,
+          title: 'added'
+        });
+      }
+
+      // if (stream['VFR_HUD']) {
+      //   $scope.myMap.panBy(
+      //     -(stream['VFR_HUD'].groundspeed*Math.cos(stream['VFR_HUD'].heading * (3.14159 / 180))),
+      //     -(stream['VFR_HUD'].groundspeed*Math.sin(stream['VFR_HUD'].heading * (3.14159 / 180)))
+      //   );
+      // }
+    };
+
     $scope.getDisplayText = function(str) {
       var stream;
       if ($scope.droneId) {
@@ -46,7 +77,8 @@ angular
         stream = $scope.simStream;
       }
 
-      if (!stream) {
+      if (!stream || !stream['ATTITUDE']
+        || !stream['VFR_HUD'] || !stream['SYS_STATUS']) {
         return 0;
       }
 
@@ -70,6 +102,8 @@ angular
       var locw;
 
       stream.camera = $scope.cameraMode;
+
+      $scope.updateGPS(stream);
 
       $('#throttleHeading').css({
         top: (height / 2) - 60,
