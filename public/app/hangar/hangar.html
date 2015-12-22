@@ -178,7 +178,7 @@
           <uib-progressbar
             ng-hide="liveDroneData[drone._id].status == 'offline'"
             type="info" min="180000" max="750000" value="mavStream[drone._id]['ATTITUDE'].time_boot_ms"></uib-progressbar>
-          <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
+          <pre>{{mavStream[drone._id] | json}}</pre>
         <div class="accordionFooter">
           <hr>
           <button class="pull-right btn btn-default" ng-click="deleteDrone(drone)">

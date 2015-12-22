@@ -323,8 +323,23 @@ angular
 				      mesh.rotation.x = scope.bind['ATTITUDE'].pitch;
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
 
+              var gpsAlt;
+              if (scope.bind['GPS_GLOBAL_ORIGIN']) {
+                gpsAlt = scope.bind['GPS_GLOBAL_ORIGIN'].altitude / 1000 || 0;
+              } else {
+                gpsAlt = 0;
+              }
+
+              var finalAlt = 0;
+              if (scope.bind['GPS_RAW_INT'] && gpsAlt != 0) {
+                finalAlt = (scope.bind['GPS_RAW_INT'].alt / 1000) - gpsAlt;
+              } else if (scope.bind['VFR_HUD']) {
+                finalAlt = scope.bind['VFR_HUD'].alt - gpsAlt;
+              }
+
+
               // altitude
-              mesh.position.y = ( (scope.bind['VFR_HUD'].alt - 512));
+              mesh.position.y = finalAlt;
 
               // location
               if (scope.bind['VFR_HUD'].groundspeed >= 0.1) {
