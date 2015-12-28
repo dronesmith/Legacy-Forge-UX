@@ -11,6 +11,7 @@ angular
     'ui.bootstrap',
     'ui.uploader',
     'ui.map',
+    'ui.ace',
     'nvd3',
     'ngCsv',
     'btford.socket-io'
@@ -45,6 +46,14 @@ angular
         url: 'hangar',
         templateUrl: 'app/hangar/hangar.html',
         controller: 'HangarCtrl',
+        parent: 'forge'
+      })
+
+      // Code Portal
+      .state('code', {
+        url: 'code',
+        templateUrl: 'app/code/code.html',
+        controller: 'CodeCtrl',
         parent: 'forge'
       })
 
