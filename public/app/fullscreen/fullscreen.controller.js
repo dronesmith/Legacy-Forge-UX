@@ -54,11 +54,11 @@ angular
 
         $scope.myMap.panTo(latlon);
 
-        var marker = new google.maps.Marker({
-          position: latlon,
-          map: $scope.myMap,
-          title: 'added'
-        });
+        // var marker = new google.maps.Marker({
+        //   position: latlon,
+        //   map: $scope.myMap,
+        //   title: 'added'
+        // });
       }
 
       // if (stream['VFR_HUD']) {
