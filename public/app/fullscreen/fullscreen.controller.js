@@ -46,6 +46,16 @@ angular
     }
 
     $scope.updateGPS = function(stream) {
+
+      // For Simly
+      if (stream['GLOBAL_POSITION_INT']) {
+        var latlon = new google.maps.LatLng(
+          stream['GLOBAL_POSITION_INT'].lat / 1e7,
+          stream['GLOBAL_POSITION_INT'].lon / 1e7);
+
+        $scope.myMap.panTo(latlon);
+      }
+
       if (stream['GPS_GLOBAL_ORIGIN']) {
 
         var latlon = new google.maps.LatLng(

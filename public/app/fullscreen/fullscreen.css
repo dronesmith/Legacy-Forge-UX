@@ -59,6 +59,10 @@
   bottom: 6px;
 }
 
+#fullscreen .pilotBtns {
+  z-index: 10000;
+}
+
 #fullscreen .cameraTxt {
   right: 28%;
 }

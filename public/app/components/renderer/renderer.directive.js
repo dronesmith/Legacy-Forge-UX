@@ -26,6 +26,8 @@ angular
 					var loader1 = new THREE.STLLoader();
           var mesh;
 
+          var isSim = false;
+
 					// scope.$watch("bind", function(newValue, oldValue) {
 					// 	if (newValue != oldValue) {
           //     scope.bind = newValue;
@@ -324,7 +326,10 @@ angular
               mesh.rotation.z = scope.bind['ATTITUDE'].roll;
 
               var gpsAlt;
-              if (scope.bind['GPS_GLOBAL_ORIGIN']) {
+              if (scope.bind['GLOBAL_POSITION_INT']) {
+                // console.log('PX4 & 3DR Got here');
+                gpsAlt = scope.bind['GLOBAL_POSITION_INT'].alt / 1000 || 0;
+              } else if (scope.bind['GPS_GLOBAL_ORIGIN']) {
                 gpsAlt = scope.bind['GPS_GLOBAL_ORIGIN'].altitude / 1000 || 0;
               } else {
                 gpsAlt = 0;
@@ -332,14 +337,30 @@ angular
 
               var finalAlt = 0;
               if (scope.bind['GPS_RAW_INT'] && gpsAlt != 0) {
-                finalAlt = (scope.bind['GPS_RAW_INT'].alt / 1000) - gpsAlt;
+                // console.log('PX4 & 3DR Got here');
+                finalAlt = Math.abs((scope.bind['GPS_RAW_INT'].alt / 1000) - gpsAlt);
+
               } else if (scope.bind['VFR_HUD']) {
-                finalAlt = scope.bind['VFR_HUD'].alt - gpsAlt;
+                console.log('PX42 Got here');
+                finalAlt = Math.abs((scope.bind['VFR_HUD'].alt / 1000) - gpsAlt);
               }
 
+              if (scope.bind && scope.bind['HEARTBEAT']) {
+                // console.log(scope.bind['HEARTBEAT']);
+                if (scope.bind['HEARTBEAT'].custom_mode == 7) {
+                  // console.log('simly');
+                  isSim = true;
+                } else {
+                  isSim = false;
+                }
+              }
 
               // altitude
               mesh.position.y = finalAlt;
+
+              if (isSim) {
+                mesh.position.y += 5;
+              }
 
               // location
               if (scope.bind['VFR_HUD'].groundspeed >= 0.1) {

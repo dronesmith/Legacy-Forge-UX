@@ -1,23 +1,16 @@
 """
-hellodrone.py:
-
 Show how to connect to the dronekit
 
-@author Geoff Gardner <geoff@skyworksas.com>
+@author Geoff
 """
-from dronekit import connect
-from dronekit.lib import VehicleMode
-from pymavlink import mavutil
+
 import time
 
-CONNECT_INFO = '0.0.0.0:14550'
-
 # Connect to the Vehicle
-print "\nConnecting to vehicle on: %s" % CONNECT_INFO
-vehicle = connect(CONNECT_INFO, wait_ready=True)
+vehicle = connect(__SIMLY__, wait_ready=True)
 
-if vehicle.mode.name == "INITIALISING":
-    print "Waiting for vehicle to initialise"
+if vehicle.mode.name == "INITIALIZING":
+    print "Waiting for vehicle to initialize"
     time.sleep(1)
 
 print "\nAccumulating vehicle attribute messages"
