@@ -33,7 +33,14 @@ angular
       // upload and run on simly
       $scope.output = [];
 
-      $scope.aceSession.getValue();
+      var code = $scope.aceSession.getValue();
+
+      $http
+        .post('/index/code/exec/run', {code: code})
+        .then(function(ev) {
+          // $scope.output.push(ev);
+        })
+      ;
 
     };
 

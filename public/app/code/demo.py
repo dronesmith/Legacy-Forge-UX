@@ -1,29 +1,82 @@
 """
-Show how to connect to the dronekit
+simple_goto.py: GUIDED mode "simple goto" example (Copter Only)
 
-@author Geoff
+Demonstrates how to arm and takeoff in Copter and how to navigate to points using Vehicle.simple_goto.
+
+Full documentation is provided at http://python.dronekit.io/examples/simple_goto.html
 """
 
+from dronekit import *
 import time
+
 
 # Connect to the Vehicle
 vehicle = connect(__SIMLY__, wait_ready=True)
 
-if vehicle.mode.name == "INITIALIZING":
-    print "Waiting for vehicle to initialize"
-    time.sleep(1)
 
-print "\nAccumulating vehicle attribute messages"
-while vehicle.attitude.pitch==None:  #Attitude is fairly quick to propagate
-    print " ..."
-    time.sleep(1)
+def arm_and_takeoff(aTargetAltitude):
+    """
+    Arms vehicle and fly to aTargetAltitude.
+    """
 
-print " Set mode=STABILIZE (currently: %s)" % vehicle.mode.name
-vehicle.mode = VehicleMode("STABILIZE")
+    print "Basic pre-arm checks"
+    # Don't try to arm until autopilot is ready
+    while not vehicle.is_armable:
+        print " Waiting for vehicle to initialise..."
+        time.sleep(1)
 
-time.sleep(2)
 
+    print "Arming motors"
+    # Copter should arm in GUIDED mode
+    vehicle.mode    = VehicleMode("GUIDED")
+    vehicle.armed   = True
+
+    # Confirm vehicle armed before attempting to take off
+    while not vehicle.armed:
+        print " Waiting for arming..."
+        time.sleep(1)
+
+    print "Taking off!"
+    vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
+
+    # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command
+    #  after Vehicle.simple_takeoff will execute immediately).
+    # while True:
+    #     print " Altitude: ", vehicle.location.global_relative_frame.alt
+    #     #Break and return from function just below target altitude.
+    #     if vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.91:
+    #         print "Reached target altitude"
+    #         break
+    #     time.sleep(1)
+
+arm_and_takeoff(10)
+time.sleep(5)
+
+print "Set default/target airspeed to 3"
+sys.stdout.flush()
+vehicle.airspeed=3
+
+print "Going towards first point for 30 seconds ..."
+sys.stdout.flush()
+point1 = LocationGlobalRelative(-35.361354, 149.165218, 20)
+vehicle.simple_goto(point1)
+
+# sleep so we can see the change in map
+time.sleep(30)
+
+print "Going towards second point for 30 seconds (groundspeed set to 10 m/s) ..."
+sys.stdout.flush()
+point2 = LocationGlobalRelative(-35.363244, 149.168801, 20)
+vehicle.simple_goto(point2, groundspeed=10)
+
+# sleep so we can see the change in map
+time.sleep(30)
+
+print "Returning to Launch"
+sys.stdout.flush()
+vehicle.mode    = VehicleMode("RTL")
 
 #Close vehicle object before exiting script
-print "\nClose vehicle object"
+print "Close vehicle object"
+sys.stdout.flush()
 vehicle.close()
