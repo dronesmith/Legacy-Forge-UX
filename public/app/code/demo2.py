@@ -1,3 +1,4 @@
+
 import random
 import time
 
@@ -7,14 +8,17 @@ import time
 vehicle = connect(__DRONE__, wait_ready=True)
 
 print "Sending RGB Command"
+sys.stdout.flush()
 
 vehicle._rgbled.color((1.0, 0.0, 1.0))
-while True:
-    vehicle._rgbled.color((random.random(), random.random(), random.random()))
-    time.sleep(1)
-    vehicle._rgbled.on()
-    time.sleep(1)
-    vehicle._rgbled.off()
+
+vehicle._rgbled.color((random.random(), random.random(), random.random()))
+time.sleep(1)
+vehicle._rgbled.on()
+time.sleep(1)
+vehicle._rgbled.color((random.random(), random.random(), random.random()))
+time.sleep(1)
+vehicle._rgbled.setDefault()
 
 #Close vehicle object before exiting script
 print "Close vehicle object"

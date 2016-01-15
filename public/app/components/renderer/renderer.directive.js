@@ -341,7 +341,7 @@ angular
                 finalAlt = Math.abs((scope.bind['GPS_RAW_INT'].alt / 1000) - gpsAlt);
 
               } else if (scope.bind['VFR_HUD']) {
-                console.log('PX42 Got here');
+                // console.log('PX42 Got here');
                 finalAlt = Math.abs((scope.bind['VFR_HUD'].alt / 1000) - gpsAlt);
               }
 
