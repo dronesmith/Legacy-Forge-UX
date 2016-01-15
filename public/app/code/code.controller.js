@@ -1,8 +1,9 @@
 angular
   .module('ForgeApp')
-  .controller('CodeCtrl', function ($scope, $http, Stream) {
+  .controller('CodeCtrl', function ($scope, $http, Stream, User) {
 
     $scope.output = [];
+    $scope.droneToCode = null;
 
     $('.aceEditor').css({
       height: window.innerHeight
@@ -20,7 +21,7 @@ angular
 
       $scope.aceSession = session;
 
-      $http.get('app/code/demo.py').then(function(ev) {
+      $http.get('app/code/demo2.py').then(function(ev) {
         session.insert({}, ev.data);
       });
     };
@@ -44,6 +45,13 @@ angular
 
     };
 
+    $scope.runDroneCode = function() {
+      $scope.output = [];
+      var code = $scope.aceSession.getValue();
+
+      Stream.emit('drone:code', {code: code, drone: $scope.droneToCode._id});
+    }
+
     window.addEventListener('resize', onWindowResize, false);
 
     function onWindowResize(e) {
@@ -51,5 +59,27 @@ angular
         height: window.innerHeight
       });
     }
+
+    if (!$scope.userInfo) {
+      $scope.$on('session:update', function(ev, data) {
+        $scope.userInfo = data;
+        initUser();
+      });
+    } else {
+      initUser();
+    }
+
+    function initUser() {
+      // Get user information
+      User
+        .get({id: $scope.userInfo.id})
+        .$promise
+        .then(function(data) {
+          $scope.UserObject = data;
+          $scope.droneToCode = $scope.UserObject.drones[0];
+        }, Error)
+      ;
+    }
+
   })
 ;
