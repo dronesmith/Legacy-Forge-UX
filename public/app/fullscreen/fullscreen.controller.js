@@ -17,6 +17,26 @@ angular
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
+
+    if (!$scope.userInfo) {
+      $scope.$on('session:update', function(ev, data) {
+        $scope.userInfo = data;
+        init();
+      });
+    } else {
+      init();
+    }
+
+    function init() {
+      User
+        .get({id: $scope.userInfo.id})
+        .$promise
+        .then(function(data) {
+          $scope.drones = data.drones;
+        }, Error)
+      ;
+    }
+
     // Null drone means use sim.
     if (!$scope.droneId) {
       Stream.on('sim:mavlink', function(data) {

@@ -9,10 +9,6 @@ angular
     Error
   ) {
 
-    if ($state.current.name == 'forge') {
-      $state.go('analytics');
-    }
-
     //
     // Get session
     //
@@ -29,6 +25,10 @@ angular
           ga('set', '&uid', data.userData.id);
 
           $scope.$broadcast("session:update", data.userData);
+
+          if ($state.current.name == 'forge') {
+            $state.go('analytics');
+          }
         }
       }, Error)
     ;
