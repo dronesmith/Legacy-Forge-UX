@@ -6,6 +6,7 @@ angular
     $scope,
     $state,
     Session,
+    Stream, // NOTE dep injection immediately constructs socket, initiating connection.
     Error
   ) {
 

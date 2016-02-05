@@ -2,7 +2,7 @@
 
 angular
   .module('ForgeApp')
-  .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
+  .controller('LoginPaneCtrl', function ($scope, $state, Session, Error, Stream) {
 
     $scope.update = function(user) {
       Session

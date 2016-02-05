@@ -129,7 +129,7 @@
             </div>
           </div>
           <div class="col-sm-4">
-            <img ng-show="liveDroneData[drone._id].status == 'offline'" class="img-responsive" src="assets/img/lucismall.png">
+            <img ng-show="liveDroneData[drone._id].status != 'online'" class="img-responsive" src="assets/img/lucismall.png">
             <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
           </div>
           <div class="col-sm-4">
@@ -137,10 +137,10 @@
               <h4><span class="glyphicon glyphicon-flash"></span>
               Power</h4>
               <uib-progressbar
-                ng-hide="liveDroneData[drone._id].status == 'offline'"
+                ng-hide="liveDroneData[drone._id].status != 'online'"
                 type="info" max="100" value="mavStream[drone._id]['SYS_STATUS'].battery_remaining">
               </uib-progressbar>
-              <p ng-show="liveDroneData[drone._id].status == 'offline'">Offline.</p>
+              <p ng-show="liveDroneData[drone._id].status != 'online'">Offline.</p>
             </hgroup>
 
             <hgroup class="text-left" ng-init="usage=(drone.missions.length / 200) * 100">
@@ -152,8 +152,8 @@
             <hgroup class="text-left" ng-init="usageDrone=(drone.missions.length / 50) * 100">
               <h4><span class="glyphicon glyphicon-hdd"></span>
               Drone Memory</h4>
-              <uib-progressbar ng-hide="liveDroneData[drone._id].status == 'offline'" type="info" max="100" value="usageDrone"></uib-progressbar>
-              <p ng-show="liveDroneData[drone._id].status == 'offline'">Offline.</p>
+              <uib-progressbar ng-hide="liveDroneData[drone._id].status != 'online'" type="info" max="100" value="usageDrone"></uib-progressbar>
+              <p ng-show="liveDroneData[drone._id].status != 'online'">Offline.</p>
             </hgroup>
           </div>
         </div>
@@ -176,9 +176,9 @@
             <p><strong>Status:</strong> {{mavStream[drone._id]['STATUSTEXT'].text}}</p>
           </div>
         </div>
-          <strong ng-hide="liveDroneData[drone._id].status == 'offline'">Mission Progess</strong>
+          <strong ng-hide="liveDroneData[drone._id].status != 'online'">Mission Progess</strong>
           <uib-progressbar
-            ng-hide="liveDroneData[drone._id].status == 'offline'"
+            ng-hide="liveDroneData[drone._id].status != 'online'"
             type="info" min="180000" max="750000" value="mavStream[drone._id]['ATTITUDE'].time_boot_ms"></uib-progressbar>
           <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
         <div class="accordionFooter">
