@@ -95,7 +95,7 @@
               ng-class="{
                 'label-success': liveDroneData[drone._id].status == 'online',
                 'label-danger': liveDroneData[drone._id].status == 'offline',
-                'label-info': !liveDroneData
+                'label-info': !liveDroneData[drone._id]
                 }">
                 {{liveDroneData[drone._id].status || "working..."}}
             </span>
