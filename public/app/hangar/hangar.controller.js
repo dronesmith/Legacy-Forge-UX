@@ -68,6 +68,36 @@ angular
       }
     };
 
+    $scope.updateGCSBroadcast = function(id) {
+      var isBroadcast = $scope.liveDroneData[id].gcBroadcast;
+      if (!isBroadcast) {
+        var modal = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/components/alertModal/alertModal.html',
+          controller: 'alertModalCtrl',
+          resolve: {
+            title: function() {
+              return '!! Warning !!';
+            },
+            text: function () {
+              return 'This feature allows you to pipe incoming MAVlink from this drone to a Ground Control Station on this computer. '
+              + 'By the nature of MAVLink, this data is insecure. Should you continue, it is highly recommended you close this manually when you are finished.'
+              + ' You must remain logged in to Dronesmith Cloud, and your drone remain online to receive the data. Please check your router\'s firewall settings if no data is being received.'
+              + ' Connect to the data by listening to address 0.0.0.0:14550.';
+            }
+          }
+        });
+
+        modal.result.then(function (selectedItem) {
+          Stream.emit('drone:gcs', {drone: id, enable: true});
+        }, function() {
+        });
+
+      } else {
+        Stream.emit('drone:gcs', {drone: id, enable: false});
+      }
+    }
+
     $scope.deleteDrone = function(drone) {
       var modal = $uibModal.open({
         animation: true,

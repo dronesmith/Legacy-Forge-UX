@@ -18,6 +18,7 @@ angular
       if (connected == false) {
         console.log("Attempting reconnect...");
         Stream.connect();
+        connected = true;
       }
     }, 5000);
 
