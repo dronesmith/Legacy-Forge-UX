@@ -3,179 +3,38 @@
 <head>
   <meta name="viewport" content="initial-scale=1"/>
   <title>Luci Cam</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="promo/css/bootstrap.min.css">
   <link rel="stylesheet" href="promo/css/jquery-ui.min.css">
   <link rel="stylesheet" href="promo/css/jquery-ui.theme.min.css">
   <link rel="stylesheet" href="promo/css/jquery-ui.structure.min.css">
-  <style type="text/css">
-
-  @font-face {
-      font-family: visitor;
-      src: url('promo/css/visitor1.ttf');
-  }
-
-    .container {
-      margin-top: 10%;
-      text-align: center;
-    }
-
-    #canvas-video {
-      position: absolute;
-      width: 640px;
-      height: 480px;
-      border: 1px solid #ccc;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      -ms-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg);
-    }
-
-    #canvas-video2 {
-      position: absolute;
-      width: 640px;
-      height: 480px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      -ms-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg);
-    }
-
-    #slider {
-      position: fixed;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      width: 640px;
-      bottom: 500px;
-      left: 2px;
-    }
-
-    #sliderText {
-      position: fixed;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    #recording {
-      font-family: visitor;
-      color: #FF0000;
-      position: fixed;
-      font-size: 50px;
-      z-index: 10;
-    }
-  </style>
+  <link rel="stylesheet" href="promo/css/main.css">
 </head>
 <body>
-        <h1 id="recording">[DRONESMITH LIVE]</h1>
-        <canvas id="canvas-video" width="640" height="480"></canvas>
-        <canvas id="canvas-video2" width="640" height="480"></canvas>
-        <div id="slider"></div>
-        <h3 id="sliderText" class="lead">Hey, ^ drag me to switch cameras!</h3>
+  <h1 id="recording">[DRONESMITH LIVE]</h1>
+  <h3 id="recordTime">Local time: [Loading...]</h3>
+  <button id="helpMe" class="btn btn-primary btn-lg">?</button>
+
+  <canvas id="canvas-video"></canvas>
+  <canvas id="canvas-video2"></canvas>
+
+  <div id="uibox">
+    <div id="slider"></div>
+      <h3 id="sliderText" class="lead text-center">Hey, ^ drag me to shift between cameras!</h3>
+      <div class="text-center">
+        <button class="btn btn-default" id="switchThermal">Thermal View</button>
+        <button class="btn btn-default" id="switchNormal">Normal View</button>
+        <button class="btn btn-default" id="switchHalf">Both</button>
+      </div>
+    </div>
   </div>
 
-  <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <div id="dialog" title="What is this?">
+    <p>Welcome to our Dronesmith Live broadcast! What you're seeing here is a live video feed of a drone with two cameras, one thermal, one ordinary, being broadcasted wirelessly to our cloud and sent to you! All of this is powered by Luci. Made by Dronesmiths, for Dronesmiths.</p>
+  </div>
+
+  <script src="promo/js/jquery-2.2.1.min.js"></script>
   <script src="promo/js/jquery-ui.min.js"></script>
   <script src="promo/js/jsmpg.js"></script>
-  <script type="text/javascript">
-
-    //
-    // jquery shindig
-    //
-    $(function() {
-
-      var normalCtx = $("#canvas-video");
-      var thermalCtx = $("#canvas-video2");
-
-      normalCtx.css("opacity", 0.5);
-      thermalCtx.css("opacity", 0.5);
-
-      normalCtx.width($(window).width());
-      normalCtx.height($(window).height());
-      thermalCtx.width($(window).width());
-      thermalCtx.height($(window).height());
-
-
-      $("#recording").css("right", 20);
-      $("#slider").css("top", $(window).height() - 100);
-      $("#slider").css("left", $(window).width() / 4);
-      $("#slider").css("width", $(window).width() / 2);
-      $("#sliderText").css("top", $(window).height() - 100);
-      $("#sliderText").css("left", $(window).width() / 4);
-
-      // handle resizing
-      $(window).resize(function() {
-        normalCtx.width($(window).width());
-        normalCtx.height($(window).height());
-
-        thermalCtx.width($(window).width());
-        thermalCtx.height($(window).height());
-
-        $("#recording").css("right", 20);
-        $("#slider").css("top", $(window).height() - 100);
-        $("#slider").css("left", $(window).width() / 4);
-        $("#slider").css("width", $(window).width() / 2);
-        $("#sliderText").css("top", $(window).height() - 100);
-        $("#sliderText").css("left", $(window).width() / 4);
-
-      });
-
-      var recordingOpacity = 0.0;
-
-      setInterval(function() {
-
-        if (recordingOpacity == 0.0) {
-          recordingOpacity = 1.0;
-        } else {
-          recordingOpacity = 0.0;
-        }
-
-        $("#recording").css("opacity", recordingOpacity);
-      }, 1000);
-
-      // Switch cameras relative to slider
-      $( "#slider" ).slider({
-        max: 200,
-        min: 0,
-        step: 1,
-        value: 100
-      }).on("slide", function(event, ui) {
-        var divd = ui.value / 200;
-
-        normalCtx.css("opacity", 1.0 - divd);
-        thermalCtx.css("opacity", divd);
-
-      });
-    });
-
-    //
-    // Video stream shindig
-    //
-    var wsUrlNormal = 'ws://localhost:8084/';
-    var wsUrlThermal = 'ws://localhost:8085/';
-
-    // Show loading notice
-    var canvas = document.getElementById('canvas-video');
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#333';
-    ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
-
-    var canvas2 = document.getElementById('canvas-video2');
-    var ctx2 = canvas2.getContext('2d');
-    ctx2.fillStyle = '#333';
-    ctx2.fillText('Loading...', canvas2.width/2-30, canvas2.height/3);
-
-
-    // Start the player
-    var client = new WebSocket(wsUrlNormal);
-    var player = new jsmpeg(client, { canvas:canvas });
-
-    var client2 = new WebSocket(wsUrlThermal);
-    var player2 = new jsmpeg(client2, { canvas:canvas2 });
-
-  </script>
+  <script src="promo/js/main.js"></script>
 </body>
 </html>
