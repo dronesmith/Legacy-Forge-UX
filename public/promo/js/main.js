@@ -8,7 +8,7 @@
       var
         width = $(window).width(),
         height = $(window).height(),
-        aspect = 9 / 16;
+        aspect = 3 / 4;
 
       normalCtx.width(width);
       normalCtx.height(width * aspect);
