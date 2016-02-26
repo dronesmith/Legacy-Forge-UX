@@ -41,6 +41,11 @@ angular
         controller: 'FullScreenCtrl'
       })
 
+      .state('terminal', {
+        url: '/terminal/:id',
+        template: '<terminal></terminal>'
+      })
+
       // Hangar view
       .state('hangar', {
         url: 'hangar',

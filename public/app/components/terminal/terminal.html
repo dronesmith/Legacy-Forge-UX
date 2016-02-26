@@ -1,0 +1,29 @@
+<section id="terminal">
+  <!-- <h1 class="lead">Loading Terminal...</h1> -->
+
+<div id="gateone"></div>
+  <div id="term"></div>
+
+  <script src="assets/gateone/gateone.js"></script>
+  <script>
+    function initGateOne(server, connect) {
+      GateOne.noSavePrefs['theme'] = 'solarized';
+      GateOne.noSavePrefs['autoConnectURL'] = connect;
+      GateOne.noSavePrefs['embedded'] = true;
+
+      GateOne.init({
+        url: server,
+        theme: 'solarized',
+        embedded: true,
+        autoConnectURL: connect
+      }, function() {
+        GateOne.Base.superSandbox("NewExternalTerm", ["GateOne.Terminal", "GateOne.Terminal.Input"], function(window, undefined) {
+          "use strict";
+          GateOne.Terminal.newTerminal(null, null, '#term');
+        });
+      });
+    }
+
+    initGateOne('http://localhost:10443', 'ssh://geoff@0.tcp.ngrok.io:10363');
+  </script>
+</section>

@@ -55,6 +55,26 @@ angular
       init();
     });
 
+    Stream.on('terminal:update', function(data) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'remoteTerminal.html',
+        controller: 'RemoteTerminalModalCtrl',
+        size: 'lg',
+        resolve: {
+          info: function () {
+            return data;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        console.log("Session closed");
+      }, function () {
+        Stream.emit('drone:terminal', {drone: data.drone._id, enable: false});
+      });
+    });
+
     $scope.getLiveDrone = function(id) {
       if (!$scope.liveDroneData) {
         return null;
@@ -96,6 +116,28 @@ angular
       } else {
         Stream.emit('drone:gcs', {drone: id, enable: false});
       }
+    }
+
+    $scope.updateRemoteTerminal = function(id) {
+        var modal = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/components/alertModal/alertModal.html',
+          controller: 'alertModalCtrl',
+          resolve: {
+            title: function() {
+              return '!! Warning !!';
+            },
+            text: function () {
+              return 'This feature has not been fully tested and may be open to security vulnerabilities. Please exercise caution. Please close this session manually when you are finished.';
+            }
+          }
+        });
+
+        modal.result.then(function (selectedItem) {
+          Stream.emit('drone:terminal', {drone: id, enable: true});
+        }, function() {
+          Stream.emit('drone:terminal', {drone: id, enable: false});
+        });
     }
 
     $scope.deleteDrone = function(drone) {
@@ -149,5 +191,42 @@ angular
         }, Error)
       ;
     }
+  })
+  .controller('RemoteTerminalModalCtrl', function($scope, $uibModalInstance, info) {
+
+    $scope.loaded = false;
+
+    $scope.title = 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port;
+
+    function initGateOne(server, connect) {
+      GateOne.noSavePrefs['theme'] = 'solarized';
+      GateOne.noSavePrefs['autoConnectURL'] = connect;
+      GateOne.noSavePrefs['embedded'] = true;
+      GateOne.noSavePrefs['goDiv'] = '#termdummy';
+
+      GateOne.init({
+        url: server,
+        theme: 'solarized',
+        embedded: true,
+        goDiv: '#termdummy',
+        autoConnectURL: connect
+      }, function() {
+        GateOne.Base.superSandbox("NewExternalTerm", ["GateOne.Terminal", "GateOne.Terminal.Input"], function(window, undefined) {
+          "use strict";
+          GateOne.Terminal.newTerminal(null, null, '#term');
+          $scope.loaded = true;
+        });
+      });
+    }
+
+    initGateOne('http://localhost:10443', 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port);
+
+    $scope.ok = function () {
+      $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
   })
 ;
