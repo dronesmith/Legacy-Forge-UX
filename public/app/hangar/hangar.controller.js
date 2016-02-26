@@ -149,7 +149,7 @@ angular
     $scope.updateRemoteTerminal = function(id, priorterm) {
 
       if (priorterm) {
-        var url = $state.href('terminal', {id: data.drone._id});
+        var url = $state.href('terminal', {id: id});
         window.open(url, "_blank");
       } else {
         var modal = $uibModal.open({
