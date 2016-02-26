@@ -1,29 +1,16 @@
 <section id="terminal">
-  <!-- <h1 class="lead">Loading Terminal...</h1> -->
+  <h1 class="lead" ng-hide="loaded">Loading Terminal...</h1>
+  <h2 class="text-center lead" ng-show="error">{{error}}</h2>
 
-<div id="gateone"></div>
-  <div id="term"></div>
+  <!-- <h4 ng-show="loaded">Log In Address: {{loginInfo}}</h2>
+  <h4 ng-show="loaded">Password: {{pass}}</h2>
+  <button ng-show="loaded" class="btn btn-primary" ng-click="endSession()">End Session</button> -->
+  <hr ng-show="error">
+
+  <div ng-hide="error">
+    <div id="gateone"></div>
+    <div id="term"></div>
+  </div>
 
   <script src="assets/gateone/gateone.js"></script>
-  <script>
-    function initGateOne(server, connect) {
-      GateOne.noSavePrefs['theme'] = 'solarized';
-      GateOne.noSavePrefs['autoConnectURL'] = connect;
-      GateOne.noSavePrefs['embedded'] = true;
-
-      GateOne.init({
-        url: server,
-        theme: 'solarized',
-        embedded: true,
-        autoConnectURL: connect
-      }, function() {
-        GateOne.Base.superSandbox("NewExternalTerm", ["GateOne.Terminal", "GateOne.Terminal.Input"], function(window, undefined) {
-          "use strict";
-          GateOne.Terminal.newTerminal(null, null, '#term');
-        });
-      });
-    }
-
-    initGateOne('http://localhost:10443', 'ssh://geoff@0.tcp.ngrok.io:10363');
-  </script>
 </section>

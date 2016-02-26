@@ -2,7 +2,8 @@
 
 angular
   .module('ForgeApp')
-  .controller('HangarCtrl', function ($scope, User, Drone, Error, Stream, $uibModal) {
+  .controller('HangarCtrl', function ($scope, User, Drone, Error, Stream,
+    $uibModal, $state, $rootScope) {
 
     Stream.on('hb', function(data) {
       // console.log(data);
@@ -13,6 +14,12 @@ angular
     $scope.mavStream = {};
     $scope.simStream = {};
     $scope.simStatus = 'offline';
+
+    // if ($rootScope.terminalInfo) {
+    //   $scope.pass = $rootScope.terminalInfo.pass;
+    //   $scope.loginInfo = 'ssh://' + $rootScope.terminalInfo.uname
+    //     + '@' + $rootScope.terminalInfo.url + ':' + $rootScope.terminalInfo.port;
+    // }
 
     var simlyCounter = 5;
 
@@ -56,23 +63,44 @@ angular
     });
 
     Stream.on('terminal:update', function(data) {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'remoteTerminal.html',
-        controller: 'RemoteTerminalModalCtrl',
-        size: 'lg',
-        resolve: {
-          info: function () {
-            return data;
-          }
-        }
-      });
 
-      modalInstance.result.then(function (selectedItem) {
-        console.log("Session closed");
-      }, function () {
-        Stream.emit('drone:terminal', {drone: data.drone._id, enable: false});
-      });
+      // NOTE
+      // This is dirty, but I'm not sure if I should build a service for something
+      // like this yet. Since I may be able to fix the embedded terminal issues, this
+      // may just be a temporary solution. (Hopefully).
+      $rootScope.terminalInfo = data.msg;
+
+      $scope.pass = $rootScope.terminalInfo.pass;
+      $scope.loginInfo = 'ssh://' + $rootScope.terminalInfo.uname
+        + '@' + $rootScope.terminalInfo.url + ':' + $rootScope.terminalInfo.port;
+
+        var url = $state.href('terminal', {id: data.drone._id});
+        window.open(url, "_blank");
+
+      // FIXME
+      // Loading terminal embedded in the page has all sorts of CSS problems because
+      // gateOne overwrites and deletes everything on page. Issues with dynamically loaded elements
+      // from the modal as well.
+
+      // var modalInstance = $uibModal.open({
+      //   animation: true,
+      //   templateUrl: 'remoteTerminal.html',
+      //   controller: 'RemoteTerminalModalCtrl',
+      //   size: 'lg',
+      //   resolve: {
+      //     info: function () {
+      //       return data;
+      //     }
+      //   }
+      // });
+      //
+      // modalInstance.result.then(function (selectedItem) {
+      //   console.log("Session closed");
+      //   Stream.emit('drone:terminal', {drone: data.drone._id, enable: false});
+      // }, function () {
+      //   console.log("Session closed");
+      //   Stream.emit('drone:terminal', {drone: data.drone._id, enable: false});
+      // });
     });
 
     $scope.getLiveDrone = function(id) {
@@ -118,7 +146,12 @@ angular
       }
     }
 
-    $scope.updateRemoteTerminal = function(id) {
+    $scope.updateRemoteTerminal = function(id, priorterm) {
+
+      if (priorterm) {
+        var url = $state.href('terminal', {id: data.drone._id});
+        window.open(url, "_blank");
+      } else {
         var modal = $uibModal.open({
           animation: true,
           templateUrl: 'app/components/alertModal/alertModal.html',
@@ -138,6 +171,11 @@ angular
         }, function() {
           Stream.emit('drone:terminal', {drone: id, enable: false});
         });
+      }
+    }
+
+    $scope.endRemoteTerminal = function(id) {
+      Stream.emit('drone:terminal', {drone: id, enable: false});
     }
 
     $scope.deleteDrone = function(drone) {
@@ -192,41 +230,41 @@ angular
       ;
     }
   })
-  .controller('RemoteTerminalModalCtrl', function($scope, $uibModalInstance, info) {
-
-    $scope.loaded = false;
-
-    $scope.title = 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port;
-
-    function initGateOne(server, connect) {
-      GateOne.noSavePrefs['theme'] = 'solarized';
-      GateOne.noSavePrefs['autoConnectURL'] = connect;
-      GateOne.noSavePrefs['embedded'] = true;
-      GateOne.noSavePrefs['goDiv'] = '#termdummy';
-
-      GateOne.init({
-        url: server,
-        theme: 'solarized',
-        embedded: true,
-        goDiv: '#termdummy',
-        autoConnectURL: connect
-      }, function() {
-        GateOne.Base.superSandbox("NewExternalTerm", ["GateOne.Terminal", "GateOne.Terminal.Input"], function(window, undefined) {
-          "use strict";
-          GateOne.Terminal.newTerminal(null, null, '#term');
-          $scope.loaded = true;
-        });
-      });
-    }
-
-    initGateOne('http://localhost:10443', 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port);
-
-    $scope.ok = function () {
-      $uibModalInstance.close();
-    };
-
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
-  })
+  // .controller('RemoteTerminalModalCtrl', function($scope, $uibModalInstance, info) {
+  //
+  //   $scope.loaded = false;
+  //
+  //   $scope.title = 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port;
+  //
+  //   function initGateOne(server, connect) {
+  //     GateOne.noSavePrefs['theme'] = 'solarized';
+  //     GateOne.noSavePrefs['autoConnectURL'] = connect;
+  //     GateOne.noSavePrefs['embedded'] = true;
+  //     GateOne.noSavePrefs['goDiv'] = '#termdummy';
+  //
+  //     GateOne.init({
+  //       url: server,
+  //       theme: 'solarized',
+  //       embedded: true,
+  //       goDiv: '#termdummy',
+  //       autoConnectURL: connect
+  //     }, function() {
+  //       GateOne.Base.superSandbox("NewExternalTerm", ["GateOne.Terminal", "GateOne.Terminal.Input"], function(window, undefined) {
+  //         "use strict";
+  //         GateOne.Terminal.newTerminal(null, null, '#term');
+  //         $scope.loaded = true;
+  //       });
+  //     });
+  //   }
+  //
+  //   initGateOne('http://localhost:10443', 'ssh://' + info.msg.uname + '@' + info.msg.url + ':' + info.msg.port);
+  //
+  //   $scope.end = function () {
+  //     $uibModalInstance.close();
+  //   };
+  //
+  //   $scope.cancel = function () {
+  //     $uibModalInstance.dismiss('cancel');
+  //   };
+  // })
 ;
