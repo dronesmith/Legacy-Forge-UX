@@ -46,6 +46,13 @@ angular
         template: '<terminal></terminal>'
       })
 
+      .state('appview', {
+        url: 'apps',
+        template: '<app-view></app-view>',
+        controller: 'AppViewCtrl',
+        parent: 'forge'
+      })
+
       // Hangar view
       .state('hangar', {
         url: 'hangar',
