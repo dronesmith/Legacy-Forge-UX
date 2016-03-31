@@ -7,12 +7,17 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-2">
+              <div class="row">
               <img class="img-responsive" width="150" height="150" ng-src="{{app.links.avatar.href}}">
+            </div>
+            <div class="row">
+              <a class="center-block btn btn-primary btn-sm btn-disabled" href="lucicam">Run</a>
+            </div>
             </div>
             <div class="col-md-10">
               <h2>{{app.name}} <span class="badge text-info">{{app.language}}</span></h2>
               <h5><em>by {{app.owner.display_name}} on {{app.created_on | date}}</em></h5>
-              <button class="btn btn-primary btn-disabled" ng-click="getApp(app.links.clone)">Install</button><small>Last updated {{app.updated_on | date}}. Size: {{(app.size / 1024).toFixed(2)}}kb.</small>
+              <small>Last updated {{app.updated_on | date}}. Size: {{(app.size / 1024).toFixed(2)}}kb.</small>
             </div>
           </div>
         </div>
