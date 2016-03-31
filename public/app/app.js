@@ -53,6 +53,12 @@ angular
         parent: 'forge'
       })
 
+      .state('lucicam', {
+        url: 'lucicam',
+        templateUrl: 'app/applive/applive.html',
+        parent: 'forge'
+      })
+
       // Hangar view
       .state('hangar', {
         url: 'hangar',
