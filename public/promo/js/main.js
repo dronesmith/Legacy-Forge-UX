@@ -54,8 +54,8 @@
     var normalCtx = $("#canvas-video");
     var thermalCtx = $("#canvas-video2");
 
-    normalCtx.css("opacity", 0.5);
-    thermalCtx.css("opacity", 0.5);
+    normalCtx.css("opacity", 1.0);
+    thermalCtx.css("opacity", 1.0);
 
     handleResize();
 
@@ -132,10 +132,10 @@
   var wsUrlThermal = 'ws://localhost:8085/';
 
   // Show loading notice
-  var canvas = document.getElementById('canvas-video');
-  var ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#333';
-  ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+  // var canvas = document.getElementById('canvas-video');
+  // var ctx = canvas.getContext('2d');
+  // ctx.fillStyle = '#333';
+  // ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
 
   var canvas2 = document.getElementById('canvas-video2');
   var ctx2 = canvas2.getContext('2d');
@@ -144,8 +144,8 @@
 
 
   // Start the player
-  var client = new WebSocket(wsUrlNormal);
-  var player = new jsmpeg(client, { canvas:canvas });
+  // var client = new WebSocket(wsUrlNormal);
+  // var player = new jsmpeg(client, { canvas:canvas });
 
   var client2 = new WebSocket(wsUrlThermal);
   var player2 = new jsmpeg(client2, { canvas:canvas2 });

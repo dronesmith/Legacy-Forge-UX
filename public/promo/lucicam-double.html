@@ -12,16 +12,16 @@
     }
 
     #canvas-video {
-      width: 320px;
-      height: 240px;
+      width: 640px;
+      height: 480px;
       border: 1px solid #ccc;
       margin: 0 auto 0;
       display: block;
     }
 
     #canvas-video2 {
-      width: 320px;
-      height: 240px;
+      width: 640px;
+      height: 480px;
       border: 1px solid #ccc;
       margin: 0 auto 0;
       display: block;
@@ -35,13 +35,13 @@
       <hr>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
         <h2 class="text-center">Normal</h2>
         <canvas id="canvas-video" width="640" height="480"></canvas>
-      </div>
+      </div> -->
 
-      <div class="col-md-6">
-        <h2 class="text-center">Thermal</h2>
+      <div class="col-md-12">
+        <!-- <h2 class="text-center">Thermal</h2> -->
         <canvas id="canvas-video2" width="640" height="480"></canvas>
       </div>
     </div>
@@ -54,10 +54,10 @@
     var wsUrlThermal = 'ws://localhost:8085/';
 
     // Show loading notice
-    var canvas = document.getElementById('canvas-video');
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#333';
-    ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+    // var canvas = document.getElementById('canvas-video');
+    // var ctx = canvas.getContext('2d');
+    // ctx.fillStyle = '#333';
+    // ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
 
     var canvas2 = document.getElementById('canvas-video2');
     var ctx2 = canvas2.getContext('2d');
@@ -66,8 +66,8 @@
 
 
     // Start the player
-    var client = new WebSocket(wsUrlNormal);
-    var player = new jsmpeg(client, { canvas:canvas });
+    // var client = new WebSocket(wsUrlNormal);
+    // var player = new jsmpeg(client, { canvas:canvas });
 
     var client2 = new WebSocket(wsUrlThermal);
     var player2 = new jsmpeg(client2, { canvas:canvas2 });
