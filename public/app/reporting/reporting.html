@@ -4,7 +4,7 @@
       <h3>Your Flights</h3>
       <ul class="list-group">
         <li ng-repeat="flight in flights" class="list-group-item">
-          <a href="" ng-hide="flight.kind=='sdlog'" ng-click="loadFlight(flight); api.refresh()">
+          <a href="" ng-hide="flight.kind=='sdlog'" ng-click="loadFlight(flight);">
             {{flight.created | date:'medium'}} | <small>{{flight.kind}}</small>
           </a>
           <p
@@ -148,5 +148,5 @@
         filename="{{CSVExport}}.csv"
         lazy-load="true">Export CSV</button>
     </div>
-  </div>  
+  </div>
 </section>

@@ -6,6 +6,7 @@ angular
     $scope,
     $state,
     $http,
+    $timeout,
     Session,
     User,
     Mission,
@@ -48,6 +49,10 @@ angular
             addDataStream('Yaw', 'bar', '30:yaw', $scope.flightData.flight),
             addDataStream('Roll', 'area', '30:roll', $scope.flightData.flight)
           ];
+          $timeout(function() {
+            $scope.api.refresh();
+          }, 500);
+          // $scope.api.refresh();
         }, Error)
       ;
     };

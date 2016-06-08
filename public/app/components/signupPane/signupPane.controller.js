@@ -6,8 +6,8 @@ angular
 
     $scope.signupSubmitted = false;
 
-    $scope.update = function(user) {
-      var user = new User($scope.signUpInfo);
+    $scope.update = function(model) {
+      var user = new User(model);
         user
           .$save()
           .then(function(data) {
