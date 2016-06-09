@@ -321,9 +321,11 @@ angular
 					//
 					function render() {
             if (scope.bind && mesh) {
-              mesh.rotation.y = scope.bind['ATTITUDE'].yaw;
-				      mesh.rotation.x = scope.bind['ATTITUDE'].pitch;
-              mesh.rotation.z = scope.bind['ATTITUDE'].roll;
+              if (scope.bind['ATTITUDE']) {
+                mesh.rotation.y = scope.bind['ATTITUDE'].yaw;
+				        mesh.rotation.x = scope.bind['ATTITUDE'].pitch;
+                mesh.rotation.z = scope.bind['ATTITUDE'].roll;
+              }
 
               var gpsAlt;
               if (scope.bind['GLOBAL_POSITION_INT']) {
@@ -356,21 +358,27 @@ angular
               }
 
               // altitude
-              mesh.position.y = finalAlt;
+              if (DSSProps.useRealAlt) {
+                mesh.position.y = finalAlt;
+              } else {
+                mesh.position.y = finalAlt / 100;
+              }
 
               if (isSim) {
                 mesh.position.y += 5;
               }
 
               // location
-              if (scope.bind['VFR_HUD'].groundspeed >= 0.1) {
+              if (scope.bind['VFR_HUD'] && scope.bind['VFR_HUD'].groundspeed >= 0.1) {
                 mesh.position.z += -(scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 20;
                 mesh.position.x += -(scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 20;
               }
 
-              headingVect.scale.z = 1 -  (scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
-              headingVect.scale.x = 1 - (scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
-              headingVect.rotation.y = (90 + scope.bind['VFR_HUD'].heading) * (3.14159 / 180);
+              if (scope.bind['VFR_HUD']) {
+                headingVect.scale.z = 1 -  (scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
+                headingVect.scale.x = 1 - (scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
+                headingVect.rotation.y = (90 + scope.bind['VFR_HUD'].heading) * (3.14159 / 180);
+              }
               headingVect.position.y = mesh.position.y;
               headingVect.position.x = mesh.position.x;
               headingVect.position.z = mesh.position.z;
@@ -378,7 +386,9 @@ angular
               climbVect.position.y = mesh.position.y;
               climbVect.position.x = mesh.position.x;
               climbVect.position.z = mesh.position.z;
-              climbVect.scale.y = 1 + scope.bind['VFR_HUD'].climb;
+              if (scope.bind['VFR_HUD']) {
+                climbVect.scale.y = 1 + scope.bind['VFR_HUD'].climb;
+              }
             }
 						// var timer = Date.now() * 0.0005;
 						// camera.position.x = Math.cos(timer) * 10;

@@ -9,7 +9,7 @@ angular
         .authenticate(user)
         .$promise
         .then(function(data) {
-          $state.go('forge');
+          $state.go('hangar');
         }, Error)
       ;
     };

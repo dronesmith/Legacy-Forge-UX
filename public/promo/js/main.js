@@ -128,8 +128,8 @@
   //
   // Video stream shindig
   //
-  var wsUrlNormal = 'ws://localhost:8084/';
-  var wsUrlThermal = 'ws://localhost:8085/';
+  var wsUrlNormal = DSSProps.promo.normal;
+  var wsUrlThermal = DSSProps.promo.thermal;
 
   // Show loading notice
   // var canvas = document.getElementById('canvas-video');

@@ -5,6 +5,8 @@ angular
   .controller('HangarCtrl', function ($scope, User, Drone, Error, Stream,
     $uibModal, $state, $rootScope) {
 
+      $scope.previewMode = DSSProps.previewMode;
+
     Stream.on('hb', function(data) {
       // console.log(data);
       $scope.liveDroneData = data;

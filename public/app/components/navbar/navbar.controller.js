@@ -12,6 +12,7 @@ angular
       Error) {
 
         $scope.userInfo = {};
+        $scope.previewMode = DSSProps.previewMode;
 
         $scope.isActive = function(route) {
           return route === $location.path();

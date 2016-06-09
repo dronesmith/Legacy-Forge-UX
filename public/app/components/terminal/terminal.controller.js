@@ -64,7 +64,7 @@ angular
           });
 
           modal.result.then(function (selectedItem) {
-            initGateOne('http://localhost:10443', $scope.loginInfo);
+            initGateOne(DSSProps.gateone, $scope.loginInfo);
           }, function() {
             Stream.emit('terminal:update', {drone: $stateParams.id, enable: false});
           });
