@@ -7,5 +7,5 @@ var DSSProps = {
   },
   gateone: "http://stage.dronesmith.io:10443",
   useRealAlt: false,
-  previewMode: true
+  previewMode: false
 };
