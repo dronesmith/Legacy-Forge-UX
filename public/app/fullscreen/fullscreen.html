@@ -1,5 +1,6 @@
 
 <section id="fullscreen">
+  <div id="hidden"></div>
   <div id="hud">
     <svg id="floghtheading" ng-include="'assets/img/renderer/hud_heading.svg'"></svg>
     <svg id="flightangle" ng-include="'assets/img/renderer/hud_ang.svg'"></svg>
@@ -48,4 +49,5 @@
   </div>
 
   <renderer fullscreen="true" bind="mavStream[droneId] || simStream"></renderer>
+  <script src="/app/components/renderer/konami.js"></script>
 </section>
