@@ -17,6 +17,36 @@ angular
   .controller('FullScreenCtrl', function ($scope, User, Drone, Error,
     Stream, $state, $stateParams) {
 
+      var flight = [];
+      var flightPath = null;
+      var marker = null;
+
+      var isMapInit = false;
+      var throttler = 0;
+
+      flightPath = new google.maps.Polyline({
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+      });
+
+
+      function addLatLng(event) {
+        var path = flightPath.getPath();
+
+        // Because path is an MVCArray, we can simply append a new coordinate
+        // and it will automatically appear.
+        path.push(event.latLng);
+
+        // Add a new marker at the new plotted point on the polyline.
+        var marker = new google.maps.Marker({
+          position: event.latLng,
+          title: '#' + path.getLength(),
+          map: $scope.myMap
+        });
+      }
+
+
     $scope.droneId = $stateParams.id;
     $scope.mavStream = {};
     $scope.simStream = {};
@@ -25,9 +55,10 @@ angular
     $scope.mapOptions = {
       // vegas
       center: new google.maps.LatLng(36.1215, -115.1739),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      zoom: 18,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
     };
+
 
 
     if (!$scope.userInfo) {
@@ -79,29 +110,46 @@ angular
 
     $scope.updateGPS = function(stream) {
 
+      if (!isMapInit) {
+        isMapInit = true;
+        flightPath.setMap($scope.myMap);
+        // $scope.myMap.addListener('click', addLatLng);
+      }
+
       // For Simly
       if (stream['GLOBAL_POSITION_INT']) {
         var latlon = new google.maps.LatLng(
           stream['GLOBAL_POSITION_INT'].lat / 1e7,
           stream['GLOBAL_POSITION_INT'].lon / 1e7);
 
-        $scope.myMap.panTo(latlon);
+          throttler++;
+
+          if (throttler > 100) {
+            $scope.myMap.panTo(latlon);
+            var path = flightPath.getPath();
+            path.push(latlon);
+            throttler = 0;
+          }
       }
 
-      if (stream['GPS_GLOBAL_ORIGIN']) {
 
-        var latlon = new google.maps.LatLng(
-          stream['GPS_GLOBAL_ORIGIN'].latitude / 1e7,
-          stream['GPS_GLOBAL_ORIGIN'].longitude / 1e7);
 
-        $scope.myMap.panTo(latlon);
-
-        // var marker = new google.maps.Marker({
-        //   position: latlon,
-        //   map: $scope.myMap,
-        //   title: 'added'
-        // });
-      }
+      // if (stream['GPS_GLOBAL_ORIGIN']) {
+      //
+      //   var latlon = new google.maps.LatLng(
+      //     stream['GPS_GLOBAL_ORIGIN'].latitude / 1e7,
+      //     stream['GPS_GLOBAL_ORIGIN'].longitude / 1e7);
+      //
+      //   throttler++;
+      //
+      //   if (throttler > 200) {
+      //     $scope.myMap.panTo(latlon);
+      //     var path = flightPath.getPath();
+      //     path.push(latlon);
+      //     throttler = 0;
+      //   }
+      //
+      // }
 
       // if (stream['VFR_HUD']) {
       //   $scope.myMap.panBy(

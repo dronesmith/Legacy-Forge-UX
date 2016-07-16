@@ -1,17 +1,18 @@
 
 <section id="fullscreen">
   <div id="hidden"></div>
-  <div id="hud">
-    <svg id="floghtheading" ng-include="'assets/img/renderer/hud_heading.svg'"></svg>
+  <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div>
+  <!-- <div id="hud"> -->
+    <!-- <svg id="floghtheading" ng-include="'assets/img/renderer/hud_heading.svg'"></svg>
     <svg id="flightangle" ng-include="'assets/img/renderer/hud_ang.svg'"></svg>
     <svg ng-include="'assets/img/renderer/hud_sides.svg'"></svg>
     <svg id="angleArrow" ng-include="'assets/img/renderer/hud_arrow_a.svg'"></svg>
 
     <svg id="throttleArrow" ng-include="'assets/img/renderer/hud_arrow_b.svg'"></svg>
-    <svg id="groundspeedArrow" ng-include="'assets/img/renderer/hud_arrow_b.svg'"></svg>
+    <svg id="groundspeedArrow" ng-include="'assets/img/renderer/hud_arrow_b.svg'"></svg> -->
 
     <!-- Textual elements -->
-    <p id="rollAngle">{{getDisplayText('roll')}}°</p>
+    <!-- <p id="rollAngle">{{getDisplayText('roll')}}°</p>
     <p id="throttleAngle">{{getDisplayText('throttle')}}%</p>
     <p id="speed">{{getDisplayText('groundspeed')}}</p>
     <p id="alt">{{getDisplayText('alt')}}m</p>
@@ -25,12 +26,11 @@
     <p id="compassN">N</p>
     <p id="compassE">E</p>
     <p id="compassS">S</p>
-    <p id="compassW">W</p>
+    <p id="compassW">W</p> -->
 
-    <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div>
+    <!-- <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div> -->
 
-    <div id="timeline">
-      <!-- <pre>{{mavStream[droneId] || simStream}}</pre> -->
+    <!-- <div id="timeline">
       <uib-progressbar
         type="info" min="180000" max="750000" value="mavStream[droneId]['ATTITUDE'].time_boot_ms
           || simStream['ATTITUDE'].time_boot_ms"></uib-progressbar>
@@ -45,9 +45,9 @@
         <label class="btn btn-primary btn-sm pilotBtns" ng-model="cameraMode" uib-btn-radio="'pilot'">Pilot</label>
         <label class="btn btn-primary btn-sm pilotBtns" ng-model="cameraMode" uib-btn-radio="'fps'">First Person</label>
       </div>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 
-  <renderer fullscreen="true" bind="mavStream[droneId] || simStream"></renderer>
+  <!-- <renderer fullscreen="true" bind="mavStream[droneId] || simStream"></renderer> -->
   <script src="/app/components/renderer/konami.js"></script>
 </section>

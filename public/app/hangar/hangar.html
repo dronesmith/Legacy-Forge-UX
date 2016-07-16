@@ -15,76 +15,6 @@
 
     <uib-accordion close-others="true" ng-click="footerOpen=!footerOpen">
 
-      <!-- Simly -->
-      <uib-accordion-group heading="">
-        <uib-accordion-heading>
-          <p class="text-right">
-            <span class="pull-left lead">Simly</span>
-            <span class="badge text-info">Drone Simulator</span>
-            <span
-              class="label"
-              ng-class="{
-                'label-success': simStatus == 'online',
-                'label-danger': simStatus == 'offline'
-                }">
-                {{simStatus}}
-            </span>
-          </p>
-        </uib-accordion-heading>
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="well" ng-init="isCollapsed = true">
-              <h3>Simly</h3>
-
-              <p>
-                <strong>Hardware Id:</strong> Luci.sim-01 <br>
-                <strong>Type:</strong> Simulator <br>
-                <strong>Manufacturer:</strong> Dronesmith Technologies <br>
-                <strong>System Id: </strong> 255 <br>
-              </p>
-              <a href="" target="_blank" class="btn btn-default" ui-sref="live({id: null})">Launch Fullscreen</a>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <img ng-show="simStatus == 'offline'" class="img-responsive" src="assets/img/lucismall.png">
-            <renderer fullscreen="false" ng-show="simStatus == 'online'" bind="simStream"></renderer>
-          </div>
-          <div class="col-sm-4">
-            <hgroup class="text-left">
-              <h4><span class="glyphicon glyphicon-flash"></span>
-              Power</h4>
-              <uib-progressbar
-                ng-hide="simStatus == 'offline'"
-                type="info" max="100" value="simStream['SYS_STATUS'].battery_remaining">
-              </uib-progressbar>
-              <p ng-show="simStatus == 'offline'">Offline.</p>
-            </hgroup>
-
-            <!-- <pre>{{simStream | json}}</pre> -->
-
-          </div>
-        </div>
-
-        <div ng-show="simStatus == 'online'" class="row">
-          <div class="col-sm-4">
-            <p><strong>Roll:</strong> {{(simStream['ATTITUDE'].roll * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Pitch:</strong> {{(simStream['ATTITUDE'].pitch * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Yaw:</strong> {{(simStream['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Throttle:</strong> {{simStream['VFR_HUD'].throttle}}</p>
-          </div>
-          <div class="col-sm-4">
-            <p><strong>Altitude:</strong> {{(simStream['VFR_HUD'].alt).toFixed(2)}}</p>
-            <p><strong>Climb:</strong> {{(simStream['VFR_HUD'].climb).toFixed(2)}}</p>
-            <p><strong>Heading:</strong> {{simStream['VFR_HUD'].heading}}</p>
-            <p><strong>Ground Speed:</strong> {{(simStream['VFR_HUD'].groundspeed).toFixed(2)}}</p>
-          </div>
-          <div class="col-sm-4">
-            <p><strong>Status:</strong> {{simStream['STATUSTEXT'].text}}</p>
-          </div>
-        </div>
-          <!-- <pre>{{simStream | json}}</pre> -->
-      </uib-accordion-group>
-
       <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
         <uib-accordion-heading>
           <p class="text-right">
@@ -137,7 +67,8 @@
           </div>
           <div class="col-sm-4">
             <img ng-show="liveDroneData[drone._id].status != 'online'" class="img-responsive" src="assets/img/lucismall.png">
-            <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
+            <div ui-map="myMap" ng-show="liveDroneData[drone._id].status == 'online'" ui-options="mapOptions"></div>
+            <!-- <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer> -->
           </div>
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">

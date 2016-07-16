@@ -1,13 +1,4 @@
 #fullscreen {
-  -webkit-perspective:200px;
-      -moz-perspective:200px;
-      perspective:200px;
-      -webkit-perspective-origin:center 400px /* 300px + 200px/2 */;
-      -moz-perspective-origin:center 400px /* 300px + 200px/2 */;
-      perspective-origin:center 400px /* 300px + 200px/2 */;
-      -webkit-transform-style:preserve-3d;
-      -moz-transform-style:preserve-3d;
-      transform-style:preserve-3d;
 }
 #fullscreen #hud svg {
   position: absolute;
@@ -69,10 +60,10 @@
 
 #fullscreen .map-canvas {
   position: absolute;
-  z-index: 101;
-  height: 25%;
-  width: 25%;
-  left: 2%;
-  top: 2%;
-  border-radius: 5px;
+  /*z-index: 101;*/
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 0px;
 }

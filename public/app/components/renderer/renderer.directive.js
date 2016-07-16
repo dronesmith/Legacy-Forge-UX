@@ -342,9 +342,9 @@ angular
               var gpsAlt;
               if (scope.bind['GLOBAL_POSITION_INT']) {
                 // console.log('PX4 & 3DR Got here');
-                gpsAlt = scope.bind['GLOBAL_POSITION_INT'].alt / 1000 || 0;
+                gpsAlt = scope.bind['GLOBAL_POSITION_INT'].alt / 100 || 0;
               } else if (scope.bind['GPS_GLOBAL_ORIGIN']) {
-                gpsAlt = scope.bind['GPS_GLOBAL_ORIGIN'].altitude / 1000 || 0;
+                gpsAlt = scope.bind['GPS_GLOBAL_ORIGIN'].altitude / 100 || 0;
               } else {
                 gpsAlt = 0;
               }
@@ -352,11 +352,11 @@ angular
               var finalAlt = 0;
               if (scope.bind['GPS_RAW_INT'] && gpsAlt != 0) {
                 // console.log('PX4 & 3DR Got here');
-                finalAlt = Math.abs((scope.bind['GPS_RAW_INT'].alt / 1000) - gpsAlt);
+                finalAlt = Math.abs((scope.bind['GPS_RAW_INT'].alt / 100) - gpsAlt);
 
               } else if (scope.bind['VFR_HUD']) {
                 // console.log('PX42 Got here');
-                finalAlt = Math.abs((scope.bind['VFR_HUD'].alt / 1000) - gpsAlt);
+                finalAlt = Math.abs((scope.bind['VFR_HUD'].alt / 100) - gpsAlt);
               }
 
               if (scope.bind && scope.bind['HEARTBEAT']) {
