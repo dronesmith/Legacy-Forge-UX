@@ -8,7 +8,7 @@
           class="form-control"
           ng-model="droneToCode"
           ng-init="droneToCode=UserObject.drones[0]"
-          ng-options="drone as (drone.name || drone.systemId) for drone in UserObject.drones track by drone._id">
+          ng-options="drone as (drone.name || drone._id) for drone in UserObject.drones track by drone._id">
         </select>
         <p class="text-danger" ng-show="!UserObject.drones">User has no drones associated with them.</p>
       </div>

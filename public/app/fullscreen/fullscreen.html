@@ -2,7 +2,7 @@
 <section id="fullscreen">
   <div id="hidden"></div>
   <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div>
-  <!-- <div id="hud"> -->
+  <div id="hud">
     <!-- <svg id="floghtheading" ng-include="'assets/img/renderer/hud_heading.svg'"></svg>
     <svg id="flightangle" ng-include="'assets/img/renderer/hud_ang.svg'"></svg>
     <svg ng-include="'assets/img/renderer/hud_sides.svg'"></svg>
@@ -21,21 +21,21 @@
     <p id="batteryHeading">Bat</p>
     <p id="altHeading">Alt</p>
     <p id="throttleHeading">Throttle</p>
-    <p id="speedHeading">Speed</p>
+    <p id="speedHeading">Speed</p> -->
 
-    <p id="compassN">N</p>
+    <!-- <p id="compassN">N</p>
     <p id="compassE">E</p>
     <p id="compassS">S</p>
     <p id="compassW">W</p> -->
 
     <!-- <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div> -->
 
-    <!-- <div id="timeline">
-      <uib-progressbar
+    <!-- <div id="timeline"> -->
+      <!-- <uib-progressbar
         type="info" min="180000" max="750000" value="mavStream[droneId]['ATTITUDE'].time_boot_ms
-          || simStream['ATTITUDE'].time_boot_ms"></uib-progressbar>
+          || simStream['ATTITUDE'].time_boot_ms"></uib-progressbar> -->
 
-      <p><strong>Elapsed Time:</strong> {{((mavStream[droneId]['ATTITUDE'].time_boot_ms
+      <!-- <p><strong>Elapsed Time:</strong> {{((mavStream[droneId]['ATTITUDE'].time_boot_ms
         || simStream['ATTITUDE'].time_boot_ms) / 1000).toFixed(2)}}s</p>
 
       <p class="cameraTxt"><strong>Camera Mode</strong></p>
@@ -46,8 +46,7 @@
         <label class="btn btn-primary btn-sm pilotBtns" ng-model="cameraMode" uib-btn-radio="'fps'">First Person</label>
       </div>
     </div> -->
-  <!-- </div> -->
+  </div>
 
   <!-- <renderer fullscreen="true" bind="mavStream[droneId] || simStream"></renderer> -->
-  <script src="/app/components/renderer/konami.js"></script>
 </section>

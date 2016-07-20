@@ -389,7 +389,7 @@ angular
               if (scope.bind['VFR_HUD']) {
                 headingVect.scale.z = 1 -  (scope.bind['VFR_HUD'].groundspeed*Math.cos(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
                 headingVect.scale.x = 1 - (scope.bind['VFR_HUD'].groundspeed*Math.sin(scope.bind['VFR_HUD'].heading * (3.14159 / 180))) / 1;
-                headingVect.rotation.y = (90 + scope.bind['VFR_HUD'].heading) * (3.14159 / 180);
+                headingVect.rotation.y = ((90 + scope.bind['VFR_HUD'].heading) * (3.14159 / 180));
               }
               headingVect.position.y = mesh.position.y;
               headingVect.position.x = mesh.position.x;
