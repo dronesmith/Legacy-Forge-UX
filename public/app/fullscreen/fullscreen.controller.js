@@ -114,6 +114,11 @@ angular
         isMapInit = true;
         flightPath.setMap($scope.myMap);
         // $scope.myMap.addListener('click', addLatLng);
+
+        marker = new google.maps.Marker({
+          title: '#0',
+          map: $scope.myMap
+        });
       }
 
       // For Simly
@@ -128,6 +133,7 @@ angular
             $scope.myMap.panTo(latlon);
             var path = flightPath.getPath();
             path.push(latlon);
+            marker.setPosition(latlon);
             throttler = 0;
           }
       }

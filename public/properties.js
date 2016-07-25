@@ -14,10 +14,10 @@
 
 var DSSProps = {
   promo: {
-    normal: "ws://stage.dronesmith.io:8084/",
-    thermal: "ws://stage.dronesmith.io:8085/"
+    normal: "ws://cloud.dronesmith.io:8084/"
+    thermal: "ws://cloud.dronesmith.io:8085/"
   },
-  gateone: "http://stage.dronesmith.io:10443",
+  gateone: "http://cloud.dronesmith.io:10443",
   useRealAlt: true,
   previewMode: false
 };

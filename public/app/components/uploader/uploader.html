@@ -20,7 +20,7 @@
         class="form-control"
         ng-model="uploaderControl.drone"
         ng-init="uploaderControl.drone=UserObject.drones[0]"
-        ng-options="drone as drone.systemId for drone in UserObject.drones track by drone._id">
+        ng-options="drone as drone._id for drone in UserObject.drones track by drone._id">
       </select>
       <p class="text-danger" ng-show="!uploaderControl.drone">User has no drones associated with them.</p>
     </fieldset>
