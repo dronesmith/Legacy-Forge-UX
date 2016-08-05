@@ -14,7 +14,7 @@
 
 var DSSProps = {
   promo: {
-    normal: "ws://cloud.dronesmith.io:8084/"
+    normal: "ws://cloud.dronesmith.io:8084/",
     thermal: "ws://cloud.dronesmith.io:8085/"
   },
   gateone: "http://cloud.dronesmith.io:10443",
