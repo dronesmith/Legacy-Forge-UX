@@ -1,0 +1,7 @@
+[
+    {
+        "origin": ["https://cloud.dronesmith.io", "http://localhost:4000"],
+        "method": ["GET"],
+        "maxAgeSeconds": 3600
+    }
+]

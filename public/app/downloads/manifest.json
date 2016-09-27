@@ -15,7 +15,7 @@
     "Luci_REVD_Firmware_2016_03_10.px4"
     ],
     "display": "Luci FMU Firmware",
-    "desc": "Please ensure you are downloading the proper hardware revision. For instance, Revision F users will select one of the 'Luci_REVF' files. If you're not sure which to download, choose the latest date from your board's revision. See our documentation for more information on finding locating your hardware revision."
+    "desc": "When installing Luci's firmware, please ensure you are downloading the firmware for the proper hardware revision. For instance, Revision F users will select one of the 'Luci_REVF' files. If you're not sure which to download, choose the latest date from your board's revision. See our documentation for more information on finding locating your hardware revision."
   },
   "dslink": {
     "urls": [
@@ -32,9 +32,9 @@
   },
   "tools": {
     "urls": [
+      "px_uploader.py",
       "luci_ql25_params",
-      "params",
-      "px_uploader.py"
+      "params"
     ],
     "display": "Preset params and utilities",
     "desc": "PX Uploader is a python script that let's you upload the FMU firmware without the aid of Ground Control Station software. Our preset param files make it easier to quickly configure your drone."

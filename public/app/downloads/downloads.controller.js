@@ -28,9 +28,16 @@ angular
     var storage = firebase.storage();
     var storageRef = storage.ref();
 
-    $http.get('app/downloads/cdn.json').then(function(file) {
-      $scope.structure = angular.copy(file.data);
-    });
+    // Get the meta file
+    storageRef
+      .child('manifest.json')
+      .getDownloadURL()
+      .then(function(url) {
+        $http.get(url).then(function(file) {
+          $scope.structure = angular.copy(file.data);
+        });
+      })
+    ;
 
      $scope.getDlRef = function(key, obj) {
       var fRef = storageRef.child(key+'/'+obj);
