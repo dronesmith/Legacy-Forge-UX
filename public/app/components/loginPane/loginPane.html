@@ -1,4 +1,5 @@
 <section id="loginPane">
+  <h3 class="text-center">Log In</h3>
     <form class="panel-body" name="loginForm" novalidate>
       <fieldset
         class="form-group"
@@ -32,9 +33,10 @@
           name="password"
           placeholder="Password"
           ng-model="user.password"
+          ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 }}"
           ng-pattern="/^(?=.*[a-z]).{8,20}$/"
           required>
-          <span ng-show="loginForm.password.$error.pattern" class="text-danger">Please enter a valid password.</span>
+          <span ng-show="loginForm.password.$dirty && loginForm.password.$error.pattern" class="text-danger">Please enter a valid password.</span>
       </fieldset>
       <button
         type="submit"
