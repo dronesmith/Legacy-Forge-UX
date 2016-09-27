@@ -58,6 +58,13 @@ angular
         template: '<terminal></terminal>'
       })
 
+      .state('downloads', {
+        url: 'downloads',
+        templateUrl: 'app/downloads/downloads.html',
+        controller: 'DownloadsCtrl',
+        parent: 'forge'
+      })
+
       .state('appview', {
         url: 'apps',
         template: '<app-view></app-view>',

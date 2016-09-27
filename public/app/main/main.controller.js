@@ -34,6 +34,9 @@ angular
 
         if (!data.userData) {
           Error(null, 'session:null');
+          if ($state.current.name == 'downloads') {
+            $state.go('downloads');
+          }
         } else {
           ga('set', '&uid', data.userData.id);
 

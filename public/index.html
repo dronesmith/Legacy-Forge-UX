@@ -61,12 +61,14 @@
     <script src="bower_components/angular-ui-map/ui-map.js"></script>
     <script src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
     <script src="bower_components/angular-ui-ace/ui-ace.js"></script>
+    <script src="bower_components/firebase/firebase.js"></script>
     <!-- endbower -->
 
     <!-- injector:js -->
     <script src="/properties.js"></script>
     <script src="/app/app.js"></script>
     <script src="/app/code/code.controller.js"></script>
+    <script src="/app/downloads/downloads.controller.js"></script>
     <script src="/app/components/accountModal/accountModal.controller.js"></script>
     <script src="/app/components/alertModal/alertModal.controller.js"></script>
     <script src="/app/components/errorModal/errorModal.controller.js"></script>
@@ -104,6 +106,17 @@
 
     <!-- Google Maps for lat/lon -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAobHL5RFTMz12EEyQlMPTnZ178dSj7xA8&v=3.exp&callback=onGoogleReady"></script>
+
+    <!-- Firebase init -->
+    <script>
+    var config = {
+      apiKey: "AIzaSyAwQ8-NOZGEyertefGlv0xeWw3L3nymwiE",
+      authDomain: "dronesmith-sso.firebaseapp.com",
+      databaseURL: "dronesmith-sso.firebaseio.com",
+      storageBucket: "dronesmith-sso.appspot.com",
+    };
+    firebase.initializeApp(config);
+    </script>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
