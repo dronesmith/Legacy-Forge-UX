@@ -81,9 +81,10 @@
               <!-- </div> -->
               <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateRemoteTerminal(drone._id, liveDroneData[drone._id].terminalInfo);">Connect Remote Terminal</a>
               <a ng-show="liveDroneData[drone._id].terminalInfo" href="" class="btn btn-default btn-block" ng-click="endRemoteTerminal(drone._id)">End Terminal Session</a>
-              <p ng-show="liveDroneData[drone._id].terminalInfo">Login Info: {{"ssh://" + liveDroneData[drone._id].terminalInfo.uname + "@" + liveDroneData[drone._id].terminalInfo.url + ":" + liveDroneData[drone._id].terminalInfo.port}}</p>
+              <p ng-show="liveDroneData[drone._id].terminalInfo">Login Info: {{"ssh -p " + liveDroneData[drone._id].terminalInfo.port + " " + liveDroneData[drone._id].terminalInfo.uname + "@" + liveDroneData[drone._id].terminalInfo.url}}</p>
+              <p ng-show="liveDroneData[drone._id].terminalInfo">Your password is the same as your Edison.</p>
               <!-- <p ng-show="liveDroneData[drone._id].terminalInfo">Password: {{liveDroneData[drone._id].terminalInfo.pass}}</p> -->
-              <p ng-show="liveDroneData[drone._id].terminalInfo"><a target="_blank" ng-href="http://cloud.dronesmith.io/#!/terminal/{{drone._id}}">Go to terminal</a></p>
+              <!-- <p ng-show="liveDroneData[drone._id].terminalInfo"><a target="_blank" ng-href="http://cloud.dronesmith.io/#!/terminal/{{drone._id}}">Go to terminal</a></p> -->
             </div>
           </div>
         </div>

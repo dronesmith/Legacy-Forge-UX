@@ -177,8 +177,8 @@ angular
       $scope.loginInfo = 'ssh://' + $rootScope.terminalInfo.uname
         + '@' + $rootScope.terminalInfo.url + ':' + $rootScope.terminalInfo.port;
 
-        var url = $state.href('terminal', {id: data.drone._id});
-        window.open(url, "_blank");
+        //var url = $state.href('terminal', {id: data.drone._id});
+        //window.open(url, "_blank");
 
       // FIXME
       // Loading terminal embedded in the page has all sorts of CSS problems because
