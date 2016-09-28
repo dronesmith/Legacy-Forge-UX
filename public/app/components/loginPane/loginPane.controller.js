@@ -17,7 +17,6 @@ angular
   .controller('LoginPaneCtrl', function ($scope, $state, Session, Error, Stream) {
 
     $scope.update = function(user) {
-      console.log(user);
       Session
         .authenticate(user)
         .$promise

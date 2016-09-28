@@ -13,6 +13,12 @@
 // TODO temp fix. This will be improved upon
 
 var DSSProps = {
+  firebase: {
+    apiKey: "AIzaSyAwQ8-NOZGEyertefGlv0xeWw3L3nymwiE",
+    authDomain: "dronesmith-sso.firebaseapp.com",
+    databaseURL: "dronesmith-sso.firebaseio.com",
+    storageBucket: "dronesmith-sso.appspot.com",
+  },
   promo: {
     normal: "ws://cloud.dronesmith.io:8084/",
     thermal: "ws://cloud.dronesmith.io:8085/"
