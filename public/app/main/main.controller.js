@@ -43,7 +43,7 @@ angular
           $scope.$broadcast("session:update", data.userData);
 
           if ($state.current.name == 'forge') {
-            $state.go('hangar');
+            $state.go('analytics');
           }
         }
       }, Error)

@@ -8,15 +8,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a ng-hide="previewMode" href="" ui-sref="appview" class="navbar-brand">Dronesmith Cloud</a>
-        <a ng-show="previewMode" href="" class="navbar-brand">Dronesmith Cloud</a>
+        <!-- <a ng-hide="previewMode" href="" ui-sref="appview" class="navbar-brand">Dronesmith Cloud</a> -->
+        <a href="" class="navbar-brand">Dronesmith Cloud</a>
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav pull-right">
           <li> <a href="" ng-click="editAccount()">Account</a> </li>
-          <li ng-class="{active: isActive('/hangar')}"> <a href="" ui-sref="hangar">Hangar</a> </li>
-          <li ng-hide="previewMode" ng-class="{active: isActive('/code')}"> <a href="" ui-sref="code">Code</a> </li>
-          <li ng-hide="previewMode" ng-class="{active: isActive('/upload')}"> <a href="" ui-sref="upload">Upload Flight</a> </li>
+          <!-- <li ng-class="{active: isActive('/hangar')}"> <a href="" ui-sref="hangar">Hangar</a> </li> -->
+          <!-- <li ng-hide="previewMode" ng-class="{active: isActive('/code')}"> <a href="" ui-sref="code">Code</a> </li> -->
+          <!-- <li ng-hide="previewMode" ng-class="{active: isActive('/upload')}"> <a href="" ui-sref="upload">Upload Flight</a> </li> -->
           <li ng-hide="previewMode" ng-class="{active: isActive('/analytics')}"> <a href="" ui-sref="analytics">Analytics</a> </li>
           <li ng-class="{active: isActive('/downloads')}"> <a href="" ui-sref="downloads">Downloads</a> </li>
           <li> <a target="_blank" href="https://dronesmith.readme.io/docs">Documentation</a> </li>

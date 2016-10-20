@@ -21,7 +21,7 @@ angular
         .authenticate(user)
         .$promise
         .then(function(data) {
-          $state.go('hangar');
+          $state.go('analytics');
         }, Error)
       ;
     };
